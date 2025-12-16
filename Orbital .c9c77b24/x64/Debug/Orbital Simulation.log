@@ -1,0 +1,6 @@
+﻿  mesh.cpp
+  simulation.cpp
+  untexturedMesh.cpp
+C:\Users\Ethan\programming\Orbital Simulation\untexturedMesh.cpp(12,39): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  Generating Code...
+  Orbital Simulation.vcxproj -> C:\Users\Ethan\programming\Orbital Simulation\x64\Debug\Orbital Simulation.exe
