@@ -43,7 +43,7 @@ Texture::~Texture()
 	glDeleteTextures(1, &ID);
 }
 
-void Texture::textureUnit(Shader& shader, const char* uniform)
+void Texture::textureUniform(Shader& shader, const char* uniform)
 {
 	shader.activate();
 	glUniform1i(glGetUniformLocation(shader.getID(), uniform), unit); // send uniform

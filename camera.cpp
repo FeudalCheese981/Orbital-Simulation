@@ -75,6 +75,22 @@ glm::mat4 Camera::getMatrix()
 	return cameraMatrix;
 }
 
+glm::mat4 Camera::getOrthogonalProjection()
+{
+	return orthogonalProjection;
+}
+
+glm::vec4 Camera::orthogonalDisplay()
+{
+	glm::vec4 screenPos = cameraMatrix * glm::vec4(position, 1.0f);
+	glm::vec3 normalisedCoords = glm::vec3(screenPos) / screenPos.w;
+	
+	float x = (normalisedCoords.x * 0.5f + 0.5f) * windowWidth;
+	float y = (normalisedCoords.y * 0.5f + 0.5f) * windowHeight;
+
+	return glm::vec4(x, y, 0.0f, screenPos.w);
+}
+
 void Camera::keyInput(GLFWwindow* window)
 {
 	if (mode == FREE)
@@ -105,11 +121,11 @@ void Camera::keyInput(GLFWwindow* window)
 		}
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		{
-			speed = 0.01f;
+			speed = 0.1f;
 		}
 		else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
 		{
-			speed = 0.1f;
+			speed = 0.01f;
 		}
 	}
 }
@@ -120,11 +136,11 @@ void Camera::mouseInput(GLFWwindow* window)
 	{
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 		{
-			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		
 			if (firstClick)
 			{
-				glfwSetInputMode(window, mouseClickX, mouseClickY);
+				glfwSetCursorPos(window, mouseClickX, mouseClickY);
 				firstClick = false;
 			}
 
@@ -136,7 +152,7 @@ void Camera::mouseInput(GLFWwindow* window)
 
 			glm::vec3 newOrientation = glm::rotate(orientation, glm::radians(rotY), glm::normalize(glm::cross(orientation, up)));
 
-			if (abs(glm::angle(glm::normalize(newOrientation), up) - glm::radians(90.0f)) <= glm::radians(90.0f))
+			if (abs(glm::angle(glm::normalize(newOrientation), up) - glm::radians(87.5f)) <= glm::radians(90.0f))
 			{
 				orientation = newOrientation;
 			}
@@ -157,11 +173,11 @@ void Camera::mouseInput(GLFWwindow* window)
 	{
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 		{
-			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 			if (firstClick)
 			{
-				glfwSetInputMode(window, mouseClickX, mouseClickY);
+				glfwSetCursorPos(window, mouseClickX, mouseClickY);
 				firstClick = false;
 			}
 
@@ -174,7 +190,7 @@ void Camera::mouseInput(GLFWwindow* window)
 			glm::vec3 newOrientation = glm::rotate(orientation, glm::radians(rotY), glm::normalize(glm::cross(orientation, up)));
 			glm::vec3 newPosition = glm::rotate(position, glm::radians(rotY), glm::normalize(glm::cross(orientation, up)));
 
-			if (abs(glm::angle(glm::normalize(newOrientation), up) - glm::radians(90.0f)) <= glm::radians(90.0f))
+			if (abs(glm::angle(glm::normalize(newOrientation), up) - glm::radians(87.5f)) <= glm::radians(90.0f))
 			{
 				orientation = newOrientation;
 				position = newPosition;

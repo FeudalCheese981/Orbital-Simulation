@@ -72,7 +72,8 @@ private:
 
 	ImGuiIO* io = nullptr;
 	
-	std::vector<UntexturedMesh> meshes;
+	std::vector<std::unique_ptr<UntexturedMesh>> meshes;
 
 	std::unique_ptr<Shader> shaderProgram;
+	std::unique_ptr<UntexturedMesh> triangle;
 };

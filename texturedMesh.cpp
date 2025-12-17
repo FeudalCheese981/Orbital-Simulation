@@ -31,7 +31,7 @@ void TexturedMesh::draw(Shader& shader, Camera& camera, GLenum type)
 			num = std::to_string(numNight++);
 		}
 		meshTextures[i].bind();
-		meshTextures[i].textureUnit(shader, (texType + num).c_str());
+		meshTextures[i].textureUniform(shader, (texType + num).c_str());
 	}
 	
 	camera.cameraUniform(shader);

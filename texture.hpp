@@ -10,7 +10,7 @@ public:
 	Texture(const char* image, const char* texType, GLuint slot); // Creates Texture from specifed image file
 	~Texture(); // Deletes the Texture
 
-	void textureUnit(Shader& shader, const char* uniform); // passes the texture to shader uniform
+	void textureUniform(Shader& shader, const char* uniform); // passes the texture to shader uniform
 	const char* getTexType();
 	void bind(); // Binds texture
 	void unbind(); // Unbinds texture

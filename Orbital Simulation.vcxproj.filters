@@ -34,9 +34,6 @@
     <Filter Include="Source Files\Mesh\EBO">
       <UniqueIdentifier>{ea8ad779-5bc0-496c-8f2b-7c52886b16ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Mesh\Texture">
-      <UniqueIdentifier>{8a72f951-f9ab-4e1a-b6f4-0d2a5f25fc8d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Shader">
       <UniqueIdentifier>{e25fd57c-b771-4598-825f-05bc23f7e672}</UniqueIdentifier>
     </Filter>
@@ -51,6 +48,21 @@
     </Filter>
     <Filter Include="Source Files\imgui">
       <UniqueIdentifier>{f00702bf-6a63-492d-8a0c-45428bafbc16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object">
+      <UniqueIdentifier>{ee7522c2-a16d-4f19-b51e-b395b248a609}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Text">
+      <UniqueIdentifier>{97094754-8413-46ca-aeb8-f5bedf0dbd31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Mesh\Texture">
+      <UniqueIdentifier>{adbfc508-3e30-4c75-86de-0350336d68a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Text\icon">
+      <UniqueIdentifier>{ad0b4540-ec5f-49d3-b32a-8d3a16b0d34b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Text\icon\Circle Icon">
+      <UniqueIdentifier>{7cdead68-d44f-4aa6-9e62-b8bec27c6e01}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -71,9 +83,6 @@
     </ClCompile>
     <ClCompile Include="stb.cpp">
       <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="texture.cpp">
-      <Filter>Source Files\Mesh\Texture</Filter>
     </ClCompile>
     <ClCompile Include="shader.cpp">
       <Filter>Source Files\Shader</Filter>
@@ -117,6 +126,21 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="object.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="textLoader.cpp">
+      <Filter>Source Files\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="character.cpp">
+      <Filter>Source Files\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>Source Files\Mesh\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="icon.cpp">
+      <Filter>Source Files\Text\icon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VAO.hpp">
@@ -127,9 +151,6 @@
     </ClInclude>
     <ClInclude Include="EBO.hpp">
       <Filter>Source Files\Mesh\EBO</Filter>
-    </ClInclude>
-    <ClInclude Include="texture.hpp">
-      <Filter>Source Files\Mesh\Texture</Filter>
     </ClInclude>
     <ClInclude Include="shader.hpp">
       <Filter>Source Files\Shader</Filter>
@@ -181,6 +202,24 @@
     </ClInclude>
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="object.hpp">
+      <Filter>Source Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="textLoader.hpp">
+      <Filter>Source Files\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="character.hpp">
+      <Filter>Source Files\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.hpp">
+      <Filter>Source Files\Mesh\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="icon.hpp">
+      <Filter>Source Files\Text\icon</Filter>
+    </ClInclude>
+    <ClInclude Include="circleIcon.hpp">
+      <Filter>Source Files\Text\icon\Circle Icon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

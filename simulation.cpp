@@ -65,8 +65,7 @@ Simulation::Simulation(const char* title, int width, int height, int xPos, int y
 
 	shaderProgram = std::make_unique<Shader>("default.vert", "default.frag");
 
-	UntexturedMesh triangle(vertices, indices);
-	meshes.push_back(triangle);
+	meshes.push_back(std::make_unique<UntexturedMesh>(vertices, indices));
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_MULTISAMPLE);
@@ -228,7 +227,8 @@ void Simulation::updateFPS()
 
 void Simulation::draw()
 {
-	meshes[0].draw(*shaderProgram, camera, GL_TRIANGLES);
+	for (int i = 0; i < meshes.size(); i++)
+		meshes[i]->draw(*shaderProgram, camera, GL_TRIANGLES);
 }
 
 void Simulation::displayUI() {}
