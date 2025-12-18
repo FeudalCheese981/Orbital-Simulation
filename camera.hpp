@@ -25,6 +25,7 @@ public:
 	void changeMode();
 	void resetView();
 
+	glm::vec3 getPos();
 	glm::mat4 getMatrix();
 	glm::mat4 getOrthogonalProjection();
 	glm::vec4 orthogonalDisplay(glm::vec3 pos);

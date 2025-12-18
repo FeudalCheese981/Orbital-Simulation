@@ -3,7 +3,7 @@
 
 #include "circleIcon.hpp"
 
-CircleIcon::CircleIcon(glm::vec4 color, std::string text, glm::vec3 pos)
+CircleIcon::CircleIcon(glm::vec3 color, std::string text, glm::vec3 pos)
 	: Icon(color, text, pos)
 {
 	glGenVertexArrays(1, &circleVAO);
@@ -23,7 +23,7 @@ CircleIcon::~CircleIcon()
 	glDeleteVertexArrays(1, &circleVAO);
 }
 
-void CircleIcon::drawShape(Shader& shader, Camera& camera, glm::vec2 xyPos)
+void CircleIcon::drawShape(Shader& shader, Camera& camera, glm::vec2 xyPos, glm::vec4 color)
 {
 	float vertices[48][2];
 	float r = 6;
@@ -53,7 +53,7 @@ void CircleIcon::drawShape(Shader& shader, Camera& camera, glm::vec2 xyPos)
 	}
 
 	shader.activate();
-	glUniform4f(glGetUniformLocation(shader.getID(), "color"), iconColor.x, iconColor.y, iconColor.z, iconColor.w);
+	glUniform4f(glGetUniformLocation(shader.getID(), "color"), color.x, color.y, color.z, color.w);
 
 	glBindVertexArray(circleVAO);
 

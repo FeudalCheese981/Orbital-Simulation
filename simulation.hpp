@@ -84,5 +84,7 @@ private:
 	std::unique_ptr<Shader> textShader;
 	std::unique_ptr<Shader> iconShader;
 
-	std::unique_ptr<CircleIcon> icon;
+	std::unique_ptr<CircleIcon> icon1;
+	std::unique_ptr<CircleIcon> icon2;
+	std::unique_ptr<CircleIcon> icon3;
 };

@@ -70,6 +70,11 @@ void Camera::resetView()
 	orientationStore = orientation;
 }
 
+glm::vec3 Camera::getPos()
+{
+	return position;
+}
+
 glm::mat4 Camera::getMatrix()
 {
 	return cameraMatrix;

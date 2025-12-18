@@ -71,13 +71,15 @@ Simulation::Simulation(const char* title, int width, int height, int xPos, int y
 	textShader = std::make_unique<Shader>("text.vert", "text.frag");
 	iconShader = std::make_unique<Shader>("icon.vert", "icon.frag");
 
-	icon = std::make_unique<CircleIcon>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), "Test", glm::vec3(0.0f, 0.5f, 0.0f));
+	icon1 = std::make_unique<CircleIcon>(glm::vec3(1.0f, 1.0f, 1.0f), "(0.0, 0.5, 0.0)", glm::vec3(0.0f, 0.5f, 0.0f));
+	icon2 = std::make_unique<CircleIcon>(glm::vec3(1.0f, 1.0f, 1.0f), "(-0.5, -0.5, 0.0)", glm::vec3(-0.5f, -0.5f, 0.0f));
+	icon3 = std::make_unique<CircleIcon>(glm::vec3(1.0f, 1.0f, 1.0f), "(0.5, -0.5, 0.0)", glm::vec3(0.5f, -0.5f, 0.0f));
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_MULTISAMPLE);
 
 	//glEnable(GL_CULL_FACE);
-	//glCullFace(GL_FRONT);
+	//glCullFace(GL_BACK);
 	//glFrontFace(GL_CCW);
 
 	glEnable(GL_BLEND);
@@ -236,7 +238,9 @@ void Simulation::draw()
 	for (int i = 0; i < meshes.size(); i++)
 		meshes[i]->draw(*shaderProgram, camera, GL_TRIANGLES);
 
-	icon->draw(*iconShader, *textShader, camera, *textLoader);
+	icon1->draw(*iconShader, *textShader, camera, *textLoader);
+	icon2->draw(*iconShader, *textShader, camera, *textLoader);
+	icon3->draw(*iconShader, *textShader, camera, *textLoader);
 }
 
 void Simulation::displayUI() {}

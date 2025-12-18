@@ -5,10 +5,10 @@
 class CircleIcon : public Icon
 {
 public:
-	CircleIcon(glm::vec4 color, std::string text, glm::vec3 pos);
+	CircleIcon(glm::vec3 color, std::string text, glm::vec3 pos);
 	~CircleIcon();
 
-	void drawShape(Shader& shader, Camera& camera, glm::vec2 xyPos) override;
+	void drawShape(Shader& shader, Camera& camera, glm::vec2 xyPos, glm::vec4 color) override;
 
 private:
 	GLuint circleVAO;

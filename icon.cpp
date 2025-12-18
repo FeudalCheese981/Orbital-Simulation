@@ -1,6 +1,6 @@
 #include "icon.hpp"
 
-Icon::Icon(glm::vec4 color, std::string text, glm::vec3 pos)
+Icon::Icon(glm::vec3 color, std::string text, glm::vec3 pos)
 {
 	updateColor(color);
 	updateText(text);
@@ -23,7 +23,7 @@ Icon::~Icon()
 	glDeleteVertexArrays(1, &textVAO);
 }
 
-void Icon::updateColor(glm::vec4 color)
+void Icon::updateColor(glm::vec3 color)
 {
 	iconColor = color;
 }
@@ -44,17 +44,24 @@ void Icon::draw(Shader& shapeShader, Shader& textShader, Camera& camera, Text& t
 	if (pos.w <= 0.0f)
 		return;
 
+	// fades out text if too far away
+	glm::vec4 color = glm::vec4(iconColor, 1.0f);
+	glm::vec3 camPos = camera.getPos();
+	float distance = abs(glm::distance(camPos, iconPos));
+	if (distance >= 3.0f)
+		color.w = 1.3f - (distance / 10.0f);
+	else
+		color.w = 1.0f;
+
 	glm::vec2 xyPos = glm::vec2(pos.x, pos.y);
 
 	glm::mat4 projection = camera.getOrthogonalProjection();
 	shapeShader.activate();
 	glUniformMatrix4fv(glGetUniformLocation(shapeShader.getID(), "projection"), 1, GL_FALSE, glm::value_ptr(camera.getOrthogonalProjection()));
 	
-	drawShape(shapeShader, camera, xyPos);
-	//glDisable(GL_DEPTH_TEST);
-	//drawText(textShader, camera, textLoader, xyPos);
-	//glEnable(GL_DEPTH_TEST);
-	text.draw(textShader, camera, iconText, xyPos, iconColor);
+	drawShape(shapeShader, camera, xyPos, color);
+
+	text.draw(textShader, camera, iconText, xyPos, color);
 }
 
 //void Icon::drawText(Shader& shader, Camera& camera, TextLoader& textLoader, glm::vec2 xyPos)
