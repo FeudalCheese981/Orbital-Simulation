@@ -6,6 +6,8 @@
 #include "texturedMesh.hpp"
 #include "untexturedMesh.hpp"
 
+#include "circleIcon.hpp"
+
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -74,6 +76,13 @@ private:
 	
 	std::vector<std::unique_ptr<UntexturedMesh>> meshes;
 
+	std::unique_ptr<Text> textLoader;
+
 	std::unique_ptr<Shader> shaderProgram;
 	std::unique_ptr<UntexturedMesh> triangle;
+
+	std::unique_ptr<Shader> textShader;
+	std::unique_ptr<Shader> iconShader;
+
+	std::unique_ptr<CircleIcon> icon;
 };

@@ -27,7 +27,7 @@ public:
 
 	glm::mat4 getMatrix();
 	glm::mat4 getOrthogonalProjection();
-	glm::vec4 orthogonalDisplay();
+	glm::vec4 orthogonalDisplay(glm::vec3 pos);
 
 	void keyInput(GLFWwindow* window);
 	void mouseInput(GLFWwindow* window);

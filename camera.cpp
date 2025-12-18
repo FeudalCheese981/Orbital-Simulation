@@ -80,9 +80,9 @@ glm::mat4 Camera::getOrthogonalProjection()
 	return orthogonalProjection;
 }
 
-glm::vec4 Camera::orthogonalDisplay()
+glm::vec4 Camera::orthogonalDisplay(glm::vec3 pos)
 {
-	glm::vec4 screenPos = cameraMatrix * glm::vec4(position, 1.0f);
+	glm::vec4 screenPos = cameraMatrix * glm::vec4(pos, 1.0f);
 	glm::vec3 normalisedCoords = glm::vec3(screenPos) / screenPos.w;
 	
 	float x = (normalisedCoords.x * 0.5f + 0.5f) * windowWidth;

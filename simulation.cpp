@@ -2,9 +2,9 @@
 
 std::vector<Vertex> vertices =
 {
-	Vertex{ glm::vec3(-0.5f, -0.5f, -0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f) },
-	Vertex{ glm::vec3( 0.5f, -0.5f, -0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f) },
-	Vertex{ glm::vec3( 0.0f,  0.5f,  0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f) }
+	Vertex{ glm::vec3(-0.5f, -0.5f, -0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f) },
+	Vertex{ glm::vec3( 0.5f, -0.5f, -0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f) },
+	Vertex{ glm::vec3( 0.0f,  0.5f,  0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f) }
 };
 std::vector<GLuint> indices =
 {
@@ -63,9 +63,15 @@ Simulation::Simulation(const char* title, int width, int height, int xPos, int y
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 460");
 
-	shaderProgram = std::make_unique<Shader>("default.vert", "default.frag");
+	textLoader = std::make_unique<Text>(16);
 
+	shaderProgram = std::make_unique<Shader>("default.vert", "default.frag");
 	meshes.push_back(std::make_unique<UntexturedMesh>(vertices, indices));
+
+	textShader = std::make_unique<Shader>("text.vert", "text.frag");
+	iconShader = std::make_unique<Shader>("icon.vert", "icon.frag");
+
+	icon = std::make_unique<CircleIcon>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), "Test", glm::vec3(0.0f, 0.5f, 0.0f));
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_MULTISAMPLE);
@@ -229,6 +235,8 @@ void Simulation::draw()
 {
 	for (int i = 0; i < meshes.size(); i++)
 		meshes[i]->draw(*shaderProgram, camera, GL_TRIANGLES);
+
+	icon->draw(*iconShader, *textShader, camera, *textLoader);
 }
 
 void Simulation::displayUI() {}

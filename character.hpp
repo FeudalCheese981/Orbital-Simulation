@@ -28,5 +28,4 @@ private:
 	unsigned int advance;
 
 	unsigned char character;
-	GLuint unit;
 };

@@ -20,7 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
-    <ClCompile Include="character.cpp" />
+    <ClCompile Include="circleIcon.cpp" />
     <ClCompile Include="EBO.cpp" />
     <ClCompile Include="fileReader.cpp" />
     <ClCompile Include="glad.c" />
@@ -38,7 +38,7 @@
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="simulation.cpp" />
     <ClCompile Include="stb.cpp" />
-    <ClCompile Include="textLoader.cpp" />
+    <ClCompile Include="text.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="texturedMesh.cpp" />
     <ClCompile Include="untexturedMesh.cpp" />
@@ -47,7 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.hpp" />
-    <ClInclude Include="character.hpp" />
     <ClInclude Include="circleIcon.hpp" />
     <ClInclude Include="EBO.hpp" />
     <ClInclude Include="fileReader.hpp" />
@@ -65,7 +64,7 @@
     <ClInclude Include="object.hpp" />
     <ClInclude Include="shader.hpp" />
     <ClInclude Include="simulation.hpp" />
-    <ClInclude Include="textLoader.hpp" />
+    <ClInclude Include="text.hpp" />
     <ClInclude Include="texture.hpp" />
     <ClInclude Include="texturedMesh.hpp" />
     <ClInclude Include="untexturedMesh.hpp" />
@@ -76,6 +75,13 @@
   <ItemGroup>
     <None Include="default.frag" />
     <None Include="default.vert" />
+    <None Include="icon.frag" />
+    <None Include="icon.vert" />
+    <None Include="text.frag" />
+    <None Include="text.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\DejaVuSans.ttf" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

@@ -9,7 +9,7 @@ Character::Character(FT_Face& face, unsigned char c)
 	}
 
 	glGenTextures(1, &ID);
-	bind();
+	glBindTexture(GL_TEXTURE_2D, ID);
 	glTexImage2D(
 		GL_TEXTURE_2D,
 		0,
@@ -29,6 +29,8 @@ Character::Character(FT_Face& face, unsigned char c)
 	size = glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows);
 	bearing = glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top);
 	advance = face->glyph->advance.x;
+
+	character = c;
 }
 
 Character::~Character()
@@ -39,13 +41,12 @@ Character::~Character()
 void Character::characterUniform(Shader& shader, glm::vec4 color)
 {
 	shader.activate();
-	glUniform1i(glGetUniformLocation(shader.getID(), "characters"), unit);
 	glUniform4f(glGetUniformLocation(shader.getID(), "color"), color.x, color.y, color.z, color.w);
 }
 
 void Character::bind()
 {
-	glActiveTexture(GL_TEXTURE0 + unit);
+	//glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, ID);
 }
 

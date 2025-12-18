@@ -129,10 +129,7 @@
     <ClCompile Include="object.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
-    <ClCompile Include="textLoader.cpp">
-      <Filter>Source Files\Text</Filter>
-    </ClCompile>
-    <ClCompile Include="character.cpp">
+    <ClCompile Include="text.cpp">
       <Filter>Source Files\Text</Filter>
     </ClCompile>
     <ClCompile Include="texture.cpp">
@@ -140,6 +137,9 @@
     </ClCompile>
     <ClCompile Include="icon.cpp">
       <Filter>Source Files\Text\icon</Filter>
+    </ClCompile>
+    <ClCompile Include="circleIcon.cpp">
+      <Filter>Source Files\Text\icon\Circle Icon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -206,10 +206,7 @@
     <ClInclude Include="object.hpp">
       <Filter>Source Files\Object</Filter>
     </ClInclude>
-    <ClInclude Include="textLoader.hpp">
-      <Filter>Source Files\Text</Filter>
-    </ClInclude>
-    <ClInclude Include="character.hpp">
+    <ClInclude Include="text.hpp">
       <Filter>Source Files\Text</Filter>
     </ClInclude>
     <ClInclude Include="texture.hpp">
@@ -229,5 +226,22 @@
     <None Include="default.frag">
       <Filter>Resource Files\shaders</Filter>
     </None>
+    <None Include="text.vert">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="text.frag">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="icon.vert">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="icon.frag">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\DejaVuSans.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
   </ItemGroup>
 </Project>
