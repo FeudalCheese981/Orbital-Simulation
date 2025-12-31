@@ -12,7 +12,7 @@ public:
 	void updateText(std::string text);
 	void updatePos(glm::vec3 pos);
 
-	void draw(Shader& shapeShader, Shader& textShader, Camera& camera, Text& text);
+	void draw(Shader& shapeShader, Shader& textShader, Camera& camera, Text& textObj);
 
 protected:
 	Icon(glm::vec3 color, std::string text, glm::vec3 pos);

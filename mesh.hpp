@@ -1,21 +1,19 @@
-﻿#pragma once
+#pragma once
 
-#include "VAO.hpp"
 #include "EBO.hpp"
-#include "shader.hpp"
-#include "camera.hpp"
+#include "VAO.hpp"
+#include "meshData.hpp"
 
 class Mesh
 {
 public:
-	virtual ~Mesh() = default;
+	Mesh(const MeshData& data);
+	~Mesh() = default;
 	
-	virtual void draw(Shader& shader, Camera& camera, GLenum type) = 0;
+	void draw(GLenum type);
 
-protected:
-	Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices);
-
+private:
 	VAO VAO;
-	std::vector<Vertex> meshVertices;
-	std::vector<GLuint> meshIndices;
+	std::vector<Vertex> vertices;
+	std::vector<unsigned int> indices;
 };

@@ -38,21 +38,19 @@ void Icon::updatePos(glm::vec3 pos)
 	iconPos = pos;
 }
 
-void Icon::draw(Shader& shapeShader, Shader& textShader, Camera& camera, Text& text)
+void Icon::draw(Shader& shapeShader, Shader& textShader, Camera& camera, Text& textObj)
 {
+	glDisable(GL_DEPTH_TEST);
 	glm::vec4 pos = camera.orthogonalDisplay(iconPos);
 	if (pos.w <= 0.0f)
+	{
 		return;
+	}
 
-	// fades out text if too far away
 	glm::vec4 color = glm::vec4(iconColor, 1.0f);
 	glm::vec3 camPos = camera.getPos();
-	float distance = abs(glm::distance(camPos, iconPos));
-	if (distance >= 3.0f)
-		color.w = 1.3f - (distance / 10.0f);
-	else
-		color.w = 1.0f;
-
+	glm::vec3 distanceScale = camera.getDistanceScale();
+	
 	glm::vec2 xyPos = glm::vec2(pos.x, pos.y);
 
 	glm::mat4 projection = camera.getOrthogonalProjection();
@@ -60,65 +58,14 @@ void Icon::draw(Shader& shapeShader, Shader& textShader, Camera& camera, Text& t
 	glUniformMatrix4fv(glGetUniformLocation(shapeShader.getID(), "projection"), 1, GL_FALSE, glm::value_ptr(camera.getOrthogonalProjection()));
 	
 	drawShape(shapeShader, camera, xyPos, color);
+	glEnable(GL_DEPTH_TEST);
 
-	text.draw(textShader, camera, iconText, xyPos, color);
+	textObj.draw(textShader, camera, iconText, xyPos, color);
 }
 
-//void Icon::drawText(Shader& shader, Camera& camera, TextLoader& textLoader, glm::vec2 xyPos)
-//{
-//	//float x = xyPos.x + 16;
-//	//float y = xyPos.y;
-//	//shader.activate();
-//	//glUniform1i(glGetUniformLocation(shader.getID(), "characters"), 0);
-//	//glBindVertexArray(textVAO);
-//
-//	//std::string::const_iterator c;
-//	//for (c = iconText.begin(); c < iconText.end(); c++)
-//	//{
-//	//	Character& ch = textLoader.getCharacter(*c);
-//
-//	//	//std::cout << ch.getSize().x << ", " << ch.getSize().y << "\n";
-//	//	float xPos = x + ch.getBearing().x;
-//	//	float yPos = y - (ch.getSize().y - ch.getBearing().y);
-//
-//	//	float w = ch.getSize().x;
-//	//	float h = ch.getSize().y;
-//
-//	//	float vertices[6][4] = {
-//	//		{ xPos,     yPos + h, 0.0f, 0.0f },
-//	//		{ xPos,     yPos,     0.0f, 1.0f },
-//	//		{ xPos + w, yPos,     1.0f, 1.0f },
-//
-//	//		{ xPos,     yPos + h, 0.0f, 0.0f },
-//	//		{ xPos + w, yPos,     1.0f, 1.0f },
-//	//		{ xPos + w, yPos + h, 1.0f, 0.0f }
-//	//	};
-//
-//	//	ch.bind();
-//	//	ch.characterUniform(shader, iconColor);
-//	//	glBindBuffer(GL_ARRAY_BUFFER, textVBO);
-//	//	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-//	//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-//
-//	//	glDrawArrays(GL_TRIANGLES, 0, 6);
-//
-//	//	x += (ch.getAdvance() >> 6);
-//	//}
-//	//glBindVertexArray(0);
-//	//glBindTexture(GL_TEXTURE_2D, 0);
-//
-//	float x = xyPos.x + 16;
-//	float y = xyPos.y;
-//
-//	shader.activate();
-//	glUniform1i(glGetUniformLocation(shader.getID(), "characters"), 0);
-//	glUniform4f(glGetUniformLocation(shader.getID(), "color"), iconColor.x, iconColor.y, iconColor.z, iconColor.w);
-//	glActiveTexture(GL_TEXTURE0);
-//	glBindVertexArray(textVAO);
-//
-//	std::string::const_iterator c;
-//	for (c = iconText.begin(); c < iconText.end(); c++)
-//	{
-//		Character ch = textLoader.getCharacter(*c);
-//	}
-//}
+// fades out text if too far away:
+//float distance = abs(glm::distance(camPos, iconPos * distanceScale));
+//if (distance >= 3.0f)
+//	color.w = 1.3f - (distance / 10.0f);
+//else
+//	color.w = 1.0f;

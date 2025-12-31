@@ -29,6 +29,12 @@ Text::Text(int fontSize)
 		GLuint texture; // create texture
 		glGenTextures(1, &texture);
 		glBindTexture(GL_TEXTURE_2D, texture);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // set texture parameters
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
 		glTexImage2D(
 			GL_TEXTURE_2D,
 			0,
@@ -40,11 +46,8 @@ Text::Text(int fontSize)
 			GL_UNSIGNED_BYTE,
 			face->glyph->bitmap.buffer
 		);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // set texture parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+		glGenerateMipmap(GL_TEXTURE_2D);
 		// store glyphs in a map
 		Character character = {
 			texture,
@@ -86,7 +89,7 @@ void Text::draw(Shader& shader, Camera& camera, std::string text, glm::ivec2 xyP
 	glDisable(GL_DEPTH_TEST);
 	glm::mat4 projection = camera.getOrthogonalProjection();
 
-	float x = xyPos.x + 16;
+	float x = xyPos.x + 16.0;
 	float y = xyPos.y;
 
 	shader.activate();

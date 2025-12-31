@@ -1,6 +1,7 @@
-﻿#pragma once
+#pragma once
 
 #include "shader.hpp"
+#include <cmath>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -9,6 +10,8 @@
 #include <glm/gtx/vector_angle.hpp>
 
 enum CameraMode { FREE, ORBITAL };
+
+glm::mat4 MakeInfReversedZProjRH(float fovY_radians, float aspecktWbyH, float zNEar);
 
 class Camera
 {
@@ -24,11 +27,13 @@ public:
 	void changeSensitivity(float newSensitivity);
 	void changeMode();
 	void resetView();
+	void setDistanceScale(glm::vec3 scale);
 
 	glm::vec3 getPos();
 	glm::mat4 getMatrix();
 	glm::mat4 getOrthogonalProjection();
 	glm::vec4 orthogonalDisplay(glm::vec3 pos);
+	glm::vec3 getDistanceScale();
 
 	void keyInput(GLFWwindow* window);
 	void mouseInput(GLFWwindow* window);
@@ -44,6 +49,8 @@ private:
 	glm::vec3 positionStore; // stores the position when switching modes
 	glm::vec3 orientationStore; // stores the orientation when switching modes
 
+	glm::vec3 distanceScale;
+
 	bool firstClick = true; // stores whether a registered click is the first in the stream
 	double mouseClickX = 0.0; // store the position of a mouse click
 	double mouseClickY = 0.0;
@@ -57,5 +64,5 @@ private:
 	float sensitivity = 150.0f; // default sensitivity
 	float FOV = glm::radians(45.0f); // default Field of View in radians
 	float nearPlane = 0.01f; // near plane distance of view frustum
-	float farPlane = 1.0e6f; // far plane distance of view frustum
+	float farPlane = 1.0e12f; // far plane distance of view frustum
 };

@@ -1,10 +1,11 @@
-﻿#pragma once
+#pragma once
 
 #include <memory>
 #include <algorithm>
 
-#include "texturedMesh.hpp"
-#include "untexturedMesh.hpp"
+#include "planet.hpp"
+#include "sun.hpp"
+#include "satellite.hpp"
 
 #include "circleIcon.hpp"
 
@@ -15,6 +16,21 @@
 const unsigned int OPENGL_VERSION_MAJOR = 4;
 const unsigned int OPENGL_VERSION_MINOR = 6;
 const unsigned int OPENGL_PROFILE = GLFW_OPENGL_CORE_PROFILE;
+
+struct LaunchUI
+{
+	bool isOpen = false;
+	char name[30];
+	double dryMass= 1000.0;
+	double fuelMass = 100.0;
+	double latitudeDegrees = 0.0;
+	double longitudeDegrees = 0.0;
+	double azimuthDegrees = 90.0;
+	double altitude_km = 200.0;
+	double velocity = 7784.34;
+	double flightPathAngleDegrees = 0.0;
+	float colour[3] = { 1.0f, 1.0f, 1.0f };
+};
 
 class Simulation
 {
@@ -38,8 +54,29 @@ public:
 	void displayUI();
 	void mainMenuUI();
 	void controlsUI();
-	void SimInfoUI();
+	void simInfoUI();
 	void fpsUI();
+	void displayLaunchUI();
+
+	void physicsUpdate();
+
+	void addSatellite // adds a satellite to simulation
+	(
+		std::string name,
+		double dryMass,
+		double fuelMass,
+		float colour[3],
+		std::string planetName,
+		double longitude, 
+		double latitude, 
+		double azimuth, 
+		double altitude, 
+		double velocity, 
+		double flightPathAngle
+	);
+	void updateSatellites(); // does satellite updates
+	void deleteSatellite(std::string name); // deletes a satellite via name
+	void drawSatellites();
 
 private:
 	GLFWwindow* window;
@@ -53,9 +90,13 @@ private:
 	int windowHeight;
 
 	bool initialised = false;
+	bool paused = false;
 
 	bool fullscreen = false;
 	bool multisample = true;
+	bool displayControls = true;
+	bool displaySimInfo = true;
+	bool displayFPS = false;
 
 	double accumulator = 0.0;
 	double deltaTime = 1.0 / 1000.0;
@@ -74,17 +115,26 @@ private:
 
 	ImGuiIO* io = nullptr;
 	
-	std::vector<std::unique_ptr<UntexturedMesh>> meshes;
+	std::vector<std::unique_ptr<Mesh>> meshes;
 
 	std::unique_ptr<Text> textLoader;
-
-	std::unique_ptr<Shader> shaderProgram;
-	std::unique_ptr<UntexturedMesh> triangle;
-
 	std::unique_ptr<Shader> textShader;
 	std::unique_ptr<Shader> iconShader;
+	std::unique_ptr<Shader> planetShader;
+	std::unique_ptr<Shader> atmosphereShader;
+	std::unique_ptr<Shader> sunShader;
+
+	std::unique_ptr<Planet> earth;
+
+	std::vector<std::unique_ptr<Planet>> planets;
+	
+	std::unique_ptr<Sun> sun;
+
+	std::vector<Satellite> satellites;
 
 	std::unique_ptr<CircleIcon> icon1;
 	std::unique_ptr<CircleIcon> icon2;
 	std::unique_ptr<CircleIcon> icon3;
+
+	LaunchUI launchUI;
 };

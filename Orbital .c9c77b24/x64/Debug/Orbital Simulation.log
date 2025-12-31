@@ -1,2 +1,6 @@
-﻿  simulation.cpp
+﻿  main.cpp
+  satellite.cpp
+  simulation.cpp
+C:\Users\Ethan\programming\Orbital Simulation\simulation.cpp(465,35): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
   Orbital Simulation.vcxproj -> C:\Users\Ethan\programming\Orbital Simulation\x64\Debug\Orbital Simulation.exe

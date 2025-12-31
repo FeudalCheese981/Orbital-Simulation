@@ -1,4 +1,15 @@
-﻿#include "camera.hpp"
+#include "camera.hpp"
+
+glm::mat4 MakeInfReversedZProjRH(float FOV, float aspectRatio, float nearPlane)
+{
+	float f = 1.0f / tan(FOV / 2.0f);
+	return glm::mat4(
+		f / aspectRatio, 0.0f,  0.0f,  0.0f,
+				  0.0f,    f,  0.0f,  0.0f,
+				  0.0f, 0.0f,  0.0f, -1.0f,
+				  0.0f, 0.0f, nearPlane,  0.0f
+	);
+}
 
 Camera::Camera(int width, int height)
 {
@@ -21,6 +32,7 @@ void Camera::updateMatrix()
 
 	view = glm::lookAt(position, position + orientation, up);
 	projection = glm::perspective(FOV, (float)(windowWidth) / (float)(windowHeight), nearPlane, farPlane);
+	//projection = MakeInfReversedZProjRH(FOV, (float)(windowWidth) / (float)(windowHeight), nearPlane);
 
 	cameraMatrix = projection * view;
 }
@@ -70,6 +82,11 @@ void Camera::resetView()
 	orientationStore = orientation;
 }
 
+void Camera::setDistanceScale(glm::vec3 scale)
+{
+	distanceScale = scale;
+}
+
 glm::vec3 Camera::getPos()
 {
 	return position;
@@ -87,13 +104,18 @@ glm::mat4 Camera::getOrthogonalProjection()
 
 glm::vec4 Camera::orthogonalDisplay(glm::vec3 pos)
 {
-	glm::vec4 screenPos = cameraMatrix * glm::vec4(pos, 1.0f);
-	glm::vec3 normalisedCoords = glm::vec3(screenPos) / screenPos.w;
+	glm::vec4 screenPos = cameraMatrix * glm::vec4(pos * distanceScale, 1.0f);
+	glm::vec2 normalisedCoords = glm::vec2(screenPos) / screenPos.w;
 	
 	float x = (normalisedCoords.x * 0.5f + 0.5f) * windowWidth;
 	float y = (normalisedCoords.y * 0.5f + 0.5f) * windowHeight;
 
 	return glm::vec4(x, y, 0.0f, screenPos.w);
+}
+
+glm::vec3 Camera::getDistanceScale()
+{
+	return distanceScale;
 }
 
 void Camera::keyInput(GLFWwindow* window)
@@ -157,7 +179,7 @@ void Camera::mouseInput(GLFWwindow* window)
 
 			glm::vec3 newOrientation = glm::rotate(orientation, glm::radians(rotY), glm::normalize(glm::cross(orientation, up)));
 
-			if (abs(glm::angle(glm::normalize(newOrientation), up) - glm::radians(87.5f)) <= glm::radians(90.0f))
+			if (abs(glm::angle(glm::normalize(newOrientation), up) - glm::radians(90.0f)) <= glm::radians(85.0f))
 			{
 				orientation = newOrientation;
 			}
@@ -195,14 +217,14 @@ void Camera::mouseInput(GLFWwindow* window)
 			glm::vec3 newOrientation = glm::rotate(orientation, glm::radians(rotY), glm::normalize(glm::cross(orientation, up)));
 			glm::vec3 newPosition = glm::rotate(position, glm::radians(rotY), glm::normalize(glm::cross(orientation, up)));
 
-			if (abs(glm::angle(glm::normalize(newOrientation), up) - glm::radians(87.5f)) <= glm::radians(90.0f))
+			if (abs(glm::angle(glm::normalize(newOrientation), up) - glm::radians(90.0f)) <= glm::radians(85.0f))
 			{
 				orientation = newOrientation;
 				position = newPosition;
 			}
 
 			orientation = glm::rotate(orientation, glm::radians(rotX), up);
-			position = glm::rotate(orientation, glm::radians(rotX), up);
+			position = glm::rotate(position, glm::radians(rotX), up);
 
 			glfwSetCursorPos(window, mouseClickX, mouseClickY);
 		}

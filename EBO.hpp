@@ -7,7 +7,7 @@
 class EBO
 {
 public:
-	EBO(std::vector<GLuint>& indices); // Creates EBO with given vector list of indices
+	EBO(std::vector<unsigned int>& indices); // Creates EBO with given vector list of indices
 	~EBO(); // Deletes EBO
 
 	void bind(); // binds EBO to OpenGL

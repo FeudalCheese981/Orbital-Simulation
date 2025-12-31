@@ -31,8 +31,8 @@ void CircleIcon::drawShape(Shader& shader, Camera& camera, glm::vec2 xyPos, glm:
 	int v = 0;
 	for (int i = 0; i < 16; i++)
 	{
-		float theta1 = 2.0f * M_PI * (float)i / 8.0f;
-		float theta2 = 2.0f * M_PI * (float)(i + 1) / 8.0f;
+		float theta1 = 2.0f * M_PI * (float)i / 16.0f;
+		float theta2 = 2.0f * M_PI * (float)(i + 1) / 16.0f;
 		float x1 = r * cos(theta1) + xyPos.x;
 		float y1 = r * sin(theta1) + xyPos.y;
 
@@ -43,13 +43,12 @@ void CircleIcon::drawShape(Shader& shader, Camera& camera, glm::vec2 xyPos, glm:
 		vertices[v][0] = xyPos.x;
 		vertices[v][1] = xyPos.y;
 		v++;
-		vertices[v][0] = x2;
-		vertices[v][1] = y2;
-		v++;
 		vertices[v][0] = x1;
 		vertices[v][1] = y1;
 		v++;
-
+		vertices[v][0] = x2;
+		vertices[v][1] = y2;
+		v++;
 	}
 
 	shader.activate();
@@ -61,7 +60,7 @@ void CircleIcon::drawShape(Shader& shader, Camera& camera, glm::vec2 xyPos, glm:
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glDrawArrays(GL_TRIANGLES, 0, 24);
+	glDrawArrays(GL_TRIANGLES, 0, 48);
 
 	glBindVertexArray(0);
 }

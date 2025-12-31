@@ -22,18 +22,6 @@
     <Filter Include="Resource Files\shaders">
       <UniqueIdentifier>{7ed6d803-a1e3-4799-b195-a5a1a23534e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Mesh">
-      <UniqueIdentifier>{d33f5991-f692-4d35-8fca-3809b944b896}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Mesh\VBO">
-      <UniqueIdentifier>{7fb99c95-28ef-4002-8325-030a6391ddc2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Mesh\VAO">
-      <UniqueIdentifier>{a4e4d357-5568-4c30-a640-fb52acf55fcb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Mesh\EBO">
-      <UniqueIdentifier>{ea8ad779-5bc0-496c-8f2b-7c52886b16ac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Shader">
       <UniqueIdentifier>{e25fd57c-b771-4598-825f-05bc23f7e672}</UniqueIdentifier>
     </Filter>
@@ -49,20 +37,47 @@
     <Filter Include="Source Files\imgui">
       <UniqueIdentifier>{f00702bf-6a63-492d-8a0c-45428bafbc16}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Object">
-      <UniqueIdentifier>{ee7522c2-a16d-4f19-b51e-b395b248a609}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Text">
       <UniqueIdentifier>{97094754-8413-46ca-aeb8-f5bedf0dbd31}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Mesh\Texture">
-      <UniqueIdentifier>{adbfc508-3e30-4c75-86de-0350336d68a9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Text\icon">
       <UniqueIdentifier>{ad0b4540-ec5f-49d3-b32a-8d3a16b0d34b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Text\icon\Circle Icon">
       <UniqueIdentifier>{7cdead68-d44f-4aa6-9e62-b8bec27c6e01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object">
+      <UniqueIdentifier>{e40c6784-736e-4fd3-93c3-a3f32ec6a258}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Mesh">
+      <UniqueIdentifier>{d33f5991-f692-4d35-8fca-3809b944b896}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Mesh\VBO">
+      <UniqueIdentifier>{7fb99c95-28ef-4002-8325-030a6391ddc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Mesh\VAO">
+      <UniqueIdentifier>{a4e4d357-5568-4c30-a640-fb52acf55fcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Mesh\EBO">
+      <UniqueIdentifier>{ea8ad779-5bc0-496c-8f2b-7c52886b16ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Mesh\Shape">
+      <UniqueIdentifier>{7624cdcc-4373-4f5f-ad04-861f823681a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Texture">
+      <UniqueIdentifier>{adbfc508-3e30-4c75-86de-0350336d68a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Planet">
+      <UniqueIdentifier>{91cdb4c8-70b3-459d-996a-ec326dde162a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Sun">
+      <UniqueIdentifier>{d7902548-4bf5-4845-a5b6-9e6e46631e17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Transorm">
+      <UniqueIdentifier>{5e07242d-8bd0-4bd1-98af-8449805f9f8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Satellite">
+      <UniqueIdentifier>{0c3e49b5-492c-4c1c-af07-67da41ae4560}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -73,13 +88,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VAO.cpp">
-      <Filter>Source Files\Mesh\VAO</Filter>
+      <Filter>Source Files\Object\Mesh\VAO</Filter>
     </ClCompile>
     <ClCompile Include="VBO.cpp">
-      <Filter>Source Files\Mesh\VBO</Filter>
+      <Filter>Source Files\Object\Mesh\VBO</Filter>
     </ClCompile>
     <ClCompile Include="EBO.cpp">
-      <Filter>Source Files\Mesh\EBO</Filter>
+      <Filter>Source Files\Object\Mesh\EBO</Filter>
     </ClCompile>
     <ClCompile Include="stb.cpp">
       <Filter>Header Files</Filter>
@@ -94,13 +109,7 @@
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
     <ClCompile Include="mesh.cpp">
-      <Filter>Source Files\Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="texturedMesh.cpp">
-      <Filter>Source Files\Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="untexturedMesh.cpp">
-      <Filter>Source Files\Mesh</Filter>
+      <Filter>Source Files\Object\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="simulation.cpp">
       <Filter>Source Files</Filter>
@@ -126,14 +135,11 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="object.cpp">
-      <Filter>Source Files\Object</Filter>
-    </ClCompile>
     <ClCompile Include="text.cpp">
       <Filter>Source Files\Text</Filter>
     </ClCompile>
     <ClCompile Include="texture.cpp">
-      <Filter>Source Files\Mesh\Texture</Filter>
+      <Filter>Source Files\Object\Texture</Filter>
     </ClCompile>
     <ClCompile Include="icon.cpp">
       <Filter>Source Files\Text\icon</Filter>
@@ -141,22 +147,37 @@
     <ClCompile Include="circleIcon.cpp">
       <Filter>Source Files\Text\icon\Circle Icon</Filter>
     </ClCompile>
+    <ClCompile Include="shape.cpp">
+      <Filter>Source Files\Object\Mesh\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="planet.cpp">
+      <Filter>Source Files\Object\Planet</Filter>
+    </ClCompile>
+    <ClCompile Include="sun.cpp">
+      <Filter>Source Files\Object\Sun</Filter>
+    </ClCompile>
+    <ClCompile Include="transform.cpp">
+      <Filter>Source Files\Object\Transorm</Filter>
+    </ClCompile>
+    <ClCompile Include="satellite.cpp">
+      <Filter>Source Files\Object\Satellite</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VAO.hpp">
-      <Filter>Source Files\Mesh\VAO</Filter>
+      <Filter>Source Files\Object\Mesh\VAO</Filter>
     </ClInclude>
     <ClInclude Include="VBO.hpp">
-      <Filter>Source Files\Mesh\VBO</Filter>
+      <Filter>Source Files\Object\Mesh\VBO</Filter>
     </ClInclude>
     <ClInclude Include="EBO.hpp">
-      <Filter>Source Files\Mesh\EBO</Filter>
+      <Filter>Source Files\Object\Mesh\EBO</Filter>
     </ClInclude>
     <ClInclude Include="shader.hpp">
       <Filter>Source Files\Shader</Filter>
     </ClInclude>
     <ClInclude Include="vertex.hpp">
-      <Filter>Source Files\Mesh</Filter>
+      <Filter>Source Files\Object\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="simulation.hpp">
       <Filter>Source Files</Filter>
@@ -165,16 +186,10 @@
       <Filter>Source Files\File</Filter>
     </ClInclude>
     <ClInclude Include="mesh.hpp">
-      <Filter>Source Files\Mesh</Filter>
+      <Filter>Source Files\Object\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="camera.hpp">
       <Filter>Source Files\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="texturedMesh.hpp">
-      <Filter>Source Files\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="untexturedMesh.hpp">
-      <Filter>Source Files\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imconfig.h">
       <Filter>Header Files\imgui</Filter>
@@ -203,14 +218,11 @@
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="object.hpp">
-      <Filter>Source Files\Object</Filter>
-    </ClInclude>
     <ClInclude Include="text.hpp">
       <Filter>Source Files\Text</Filter>
     </ClInclude>
     <ClInclude Include="texture.hpp">
-      <Filter>Source Files\Mesh\Texture</Filter>
+      <Filter>Source Files\Object\Texture</Filter>
     </ClInclude>
     <ClInclude Include="icon.hpp">
       <Filter>Source Files\Text\icon</Filter>
@@ -218,12 +230,27 @@
     <ClInclude Include="circleIcon.hpp">
       <Filter>Source Files\Text\icon\Circle Icon</Filter>
     </ClInclude>
+    <ClInclude Include="shape.hpp">
+      <Filter>Source Files\Object\Mesh\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="meshData.hpp">
+      <Filter>Source Files\Object\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="planet.hpp">
+      <Filter>Source Files\Object\Planet</Filter>
+    </ClInclude>
+    <ClInclude Include="sun.hpp">
+      <Filter>Source Files\Object\Sun</Filter>
+    </ClInclude>
+    <ClInclude Include="transform.hpp">
+      <Filter>Source Files\Object\Transorm</Filter>
+    </ClInclude>
+    <ClInclude Include="satellite.hpp">
+      <Filter>Source Files\Object\Satellite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="default.vert">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="default.frag">
+    <None Include="mesh.vert">
       <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="text.vert">
@@ -238,10 +265,33 @@
     <None Include="icon.frag">
       <Filter>Resource Files\shaders</Filter>
     </None>
+    <None Include="planet.frag">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="atmosphere.frag">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="sun.frag">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="fonts\DejaVuSans.ttf">
       <Filter>Resource Files\fonts</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\default.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="textures\8k_earth_daymap.jpg">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="textures\8k_earth_nightmap.jpg">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="textures\8k_earth_specular_map.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

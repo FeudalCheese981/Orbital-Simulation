@@ -1,15 +1,15 @@
-﻿#include "mesh.hpp"
+#include "mesh.hpp"
 
-Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices)
+Mesh::Mesh(const MeshData& data)
 {
 	// Store new vertices and indices
-	meshVertices = vertices;
-	meshIndices = indices;
+	vertices = data.vertices;
+	indices = data.indices;
 
 	// Bind VAO to current context
 	VAO.bind();
-	VBO VBO(meshVertices); // Create temporart Vertex Buffer and Element Buffer Objects
-	EBO EBO(meshIndices);
+	VBO VBO(vertices); // Create temporart Vertex Buffer and Element Buffer Objects
+	EBO EBO(indices);
 	 
 	// Link vertex attributes to Vertex Array Objects
 	VAO.linkAttrib(VBO, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)(0));
@@ -21,4 +21,10 @@ Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices)
 	VAO.unbind();
 	VBO.unbind();
 	EBO.unbind();
+}
+
+void Mesh::draw(GLenum type)
+{
+	VAO.bind();
+	glDrawElements(type, indices.size(), GL_UNSIGNED_INT, 0);
 }
