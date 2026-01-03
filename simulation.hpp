@@ -132,9 +132,5 @@ private:
 
 	std::vector<Satellite> satellites;
 
-	std::unique_ptr<CircleIcon> icon1;
-	std::unique_ptr<CircleIcon> icon2;
-	std::unique_ptr<CircleIcon> icon3;
-
 	LaunchUI launchUI;
 };

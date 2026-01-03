@@ -103,6 +103,7 @@ private:
 	glm::vec4 satelliteOrbitLineColour;
 
 	bool burnPlanned = false;
+	bool selected = false;
 
 	Planet* satelliteParentBody;
 	double gravitationalParameter;

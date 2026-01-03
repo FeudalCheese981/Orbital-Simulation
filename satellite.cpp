@@ -43,21 +43,26 @@ Satellite::Satellite
 		flightPathAngle,
 		time
 	);
-	satelliteIcon = std::make_unique<CircleIcon>(glm::vec3(orbitLineColour), name, glm::vec3(0.0f));
+
+	satelliteIcon = std::make_unique<CircleIcon>(glm::vec3(orbitLineColour), name, glm::vec3(0.0));
 }
 
 void Satellite::draw(Shader& shapeShader, Shader& textShader, Shader& orbitLineShader, Camera& camera, Text& textObj)
 {
-	if (satelliteOrbitMesh != nullptr)
-	{
-		satelliteIcon->draw(shapeShader, textShader, camera, textObj);
+	if (satelliteOrbitMesh == nullptr)
+		return;
+	if (selected)
+		glLineWidth(3.0f);
 
-		orbitLineShader.activate();
-		satelliteTransform.uniform(orbitLineShader);
-		satelliteOrbitMesh->draw(GL_LINE_STRIP);
-		if (burnPlanned)
-			satelliteNewOrbitMesh->draw(GL_LINES);
-	}
+	satelliteIcon->draw(shapeShader, textShader, camera, textObj);
+
+	orbitLineShader.activate();
+	satelliteTransform.uniform(orbitLineShader);
+	satelliteOrbitMesh->draw(GL_LINE_STRIP);
+	if (burnPlanned)
+		satelliteNewOrbitMesh->draw(GL_LINES);
+
+	glLineWidth(1.0f);
 }
 
 void Satellite::changeParentBody(Planet* parentBody)

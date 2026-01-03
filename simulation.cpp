@@ -56,10 +56,6 @@ Simulation::Simulation(const char* title, int width, int height, int xPos, int y
 	textShader = std::make_unique<Shader>("text.vert", "text.frag");
 	iconShader = std::make_unique<Shader>("icon.vert", "icon.frag");
 
-	icon1 = std::make_unique<CircleIcon>(glm::vec3(1.0), "icon1", glm::vec3(1.5f));
-	icon2 = std::make_unique<CircleIcon>(glm::vec3(1.0), "icon1", glm::vec3(0.0f));
-	icon3 = std::make_unique<CircleIcon>(glm::vec3(1.0), "icon1", glm::vec3(-1.5f));
-
 	glm::mat distanceScale = glm::mat4(1.0f);
 	glm::vec3 scale = glm::vec3(1.0f / 6371000.0f);
 	distanceScale = glm::scale(distanceScale, scale);
@@ -298,8 +294,6 @@ void Simulation::draw()
 {
 	sun->draw(*sunShader, camera);
 	earth->draw(*planetShader, *atmosphereShader, camera);
-
-	icon2->draw(*iconShader, *textShader, camera, *textLoader);
 
 	drawSatellites();
 }
