@@ -47,14 +47,14 @@ Satellite::Satellite
 	satelliteIcon = std::make_unique<CircleIcon>(glm::vec3(orbitLineColour), name, glm::vec3(0.0));
 }
 
-void Satellite::draw(Shader& shapeShader, Shader& textShader, Shader& orbitLineShader, Camera& camera, Text& textObj)
+void Satellite::draw(Shader& shapeShader, Shader& textShader, Shader& orbitLineShader, Camera& camera, Text& textObj, float uiScale)
 {
 	if (satelliteOrbitMesh == nullptr)
 		return;
 	if (selected)
-		glLineWidth(3.0f);
+		glLineWidth(3.0f * uiScale);
 
-	satelliteIcon->draw(shapeShader, textShader, camera, textObj);
+	satelliteIcon->draw(shapeShader, textShader, camera, textObj, uiScale);
 
 	orbitLineShader.activate();
 	satelliteTransform.uniform(orbitLineShader);
@@ -62,7 +62,7 @@ void Satellite::draw(Shader& shapeShader, Shader& textShader, Shader& orbitLineS
 	if (burnPlanned)
 		satelliteNewOrbitMesh->draw(GL_LINES);
 
-	glLineWidth(1.0f);
+	glLineWidth(1.0f * uiScale);
 }
 
 void Satellite::changeParentBody(Planet* parentBody)

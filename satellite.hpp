@@ -40,7 +40,7 @@ public:
 	Satellite& operator=(Satellite&&) noexcept = default;
 
 
-	void draw(Shader& shapeShader, Shader& textShader, Shader& lineShader, Camera& camera, Text& textObj);
+	void draw(Shader& shapeShader, Shader& textShader, Shader& lineShader, Camera& camera, Text& textObj, float uiScale);
 
 	// TODO: void manoeuvrePlan(double burnStartTime);
 	void changeParentBody(Planet* parentBody);

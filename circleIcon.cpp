@@ -23,10 +23,10 @@ CircleIcon::~CircleIcon()
 	glDeleteVertexArrays(1, &circleVAO);
 }
 
-void CircleIcon::drawShape(Shader& shader, Camera& camera, glm::vec2 xyPos, glm::vec4 color)
+void CircleIcon::drawShape(Shader& shader, Camera& camera, glm::vec2 xyPos, glm::vec4 color, float uiScale)
 {
 	float vertices[48][2];
-	float r = 6;
+	float r = 6 * uiScale;
 
 	int v = 0;
 	for (int i = 0; i < 16; i++)

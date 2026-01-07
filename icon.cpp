@@ -38,7 +38,7 @@ void Icon::updatePos(glm::vec3 pos)
 	iconPos = pos;
 }
 
-void Icon::draw(Shader& shapeShader, Shader& textShader, Camera& camera, Text& textObj)
+void Icon::draw(Shader& shapeShader, Shader& textShader, Camera& camera, Text& textObj, float uiScale)
 {
 	glDisable(GL_DEPTH_TEST);
 	glm::vec4 pos = camera.orthogonalDisplay(iconPos);
@@ -57,15 +57,8 @@ void Icon::draw(Shader& shapeShader, Shader& textShader, Camera& camera, Text& t
 	shapeShader.activate();
 	glUniformMatrix4fv(glGetUniformLocation(shapeShader.getID(), "projection"), 1, GL_FALSE, glm::value_ptr(camera.getOrthogonalProjection()));
 	
-	drawShape(shapeShader, camera, xyPos, color);
+	drawShape(shapeShader, camera, xyPos, color, uiScale);
 	glEnable(GL_DEPTH_TEST);
 
-	textObj.draw(textShader, camera, iconText, xyPos, color);
+	textObj.draw(textShader, camera, iconText, xyPos, color, uiScale);
 }
-
-// fades out text if too far away:
-//float distance = abs(glm::distance(camPos, iconPos * distanceScale));
-//if (distance >= 3.0f)
-//	color.w = 1.3f - (distance / 10.0f);
-//else
-//	color.w = 1.0f;

@@ -8,7 +8,7 @@ public:
 	CircleIcon(glm::vec3 color, std::string text, glm::vec3 pos);
 	~CircleIcon();
 
-	void drawShape(Shader& shader, Camera& camera, glm::vec2 xyPos, glm::vec4 color) override;
+	void drawShape(Shader& shader, Camera& camera, glm::vec2 xyPos, glm::vec4 color, float uiScale) override;
 
 private:
 	GLuint circleVAO;

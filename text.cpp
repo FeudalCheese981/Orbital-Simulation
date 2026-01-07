@@ -84,7 +84,7 @@ Text::~Text()
 	glDeleteVertexArrays(1, &VAO);
 }
 
-void Text::draw(Shader& shader, Camera& camera, std::string text, glm::ivec2 xyPos, glm::vec4 color)
+void Text::draw(Shader& shader, Camera& camera, std::string text, glm::ivec2 xyPos, glm::vec4 color, float uiScale)
 {
 	glDisable(GL_DEPTH_TEST);
 	glm::mat4 projection = camera.getOrthogonalProjection();
@@ -104,11 +104,11 @@ void Text::draw(Shader& shader, Camera& camera, std::string text, glm::ivec2 xyP
 	{
 		Character ch = characters[*c];
 
-		float xPos = x + ch.bearing.x;
-		float yPos = y - (ch.size.y - ch.bearing.y);
+		float xPos = x + ch.bearing.x * uiScale;
+		float yPos = y - (ch.size.y - ch.bearing.y) * uiScale;
 
-		float w = ch.size.x;
-		float h = ch.size.y;
+		float w = ch.size.x * uiScale;
+		float h = ch.size.y * uiScale;
 
 		float vertices[6][4] = {
 			{ xPos,     yPos + h, 0.0f, 0.0f },
@@ -127,7 +127,7 @@ void Text::draw(Shader& shader, Camera& camera, std::string text, glm::ivec2 xyP
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
-		x += (ch.advance >> 6);
+		x += (ch.advance >> 6) * uiScale;
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);

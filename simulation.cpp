@@ -42,12 +42,14 @@ Simulation::Simulation(const char* title, int width, int height, int xPos, int y
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetScrollCallback(window, scroll_callback);
 
+	glfwGetWindowContentScale(window, &xScale, &yScale);
+
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	io = &ImGui::GetIO(); (void)io;
 	ImGui::GetStyle();
 	ImGui::StyleColorsDark();
-	io->Fonts->AddFontFromFileTTF("fonts/DejaVuSans.ttf", 15.0f * 1.50f);
+	io->Fonts->AddFontFromFileTTF("fonts/DejaVuSans.ttf", 15.0f * xScale);
 
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 460");
@@ -529,6 +531,6 @@ void Simulation::drawSatellites()
 	for (int i = 0; i < satellites.size(); i++)
 	{
 		Satellite& satellite = satellites[i];
-		satellite.draw(*iconShader, *textShader, *sunShader, camera, *textLoader);
+		satellite.draw(*iconShader, *textShader, *sunShader, camera, *textLoader, xScale);
 	}
 }

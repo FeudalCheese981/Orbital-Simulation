@@ -22,7 +22,7 @@ public:
 	Text(int fontSize);
 	~Text();
 
-	void draw(Shader& shader, Camera& camera, std::string text, glm::ivec2 xyPos, glm::vec4 color);
+	void draw(Shader& shader, Camera& camera, std::string text, glm::ivec2 xyPos, glm::vec4 color, float uiScale);
 
 private:
 	std::map<unsigned char, Character> characters;

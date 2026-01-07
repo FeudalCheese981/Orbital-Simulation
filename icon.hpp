@@ -12,12 +12,12 @@ public:
 	void updateText(std::string text);
 	void updatePos(glm::vec3 pos);
 
-	void draw(Shader& shapeShader, Shader& textShader, Camera& camera, Text& textObj);
+	void draw(Shader& shapeShader, Shader& textShader, Camera& camera, Text& textObj, float uiScale);
 
 protected:
 	Icon(glm::vec3 color, std::string text, glm::vec3 pos);
 
-	virtual void drawShape(Shader& shader, Camera& camera, glm::vec2 xyPos, glm::vec4 color) = 0;
+	virtual void drawShape(Shader& shader, Camera& camera, glm::vec2 xyPos, glm::vec4 color, float uiScale) = 0;
 	
 	GLuint textVAO;
 	GLuint textVBO;

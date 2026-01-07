@@ -88,6 +88,8 @@ private:
 	int windowYPos;
 	int windowWidth;
 	int windowHeight;
+	float xScale;
+	float yScale;
 
 	bool initialised = false;
 	bool paused = false;
