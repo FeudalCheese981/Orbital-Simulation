@@ -47,7 +47,7 @@ Simulation::Simulation(const char* title, int width, int height, int xPos, int y
 	io = &ImGui::GetIO(); (void)io;
 	ImGui::GetStyle();
 	ImGui::StyleColorsDark();
-	io->Fonts->AddFontFromFileTTF("fonts/DejaVuSans.ttf", 15.0f);
+	io->Fonts->AddFontFromFileTTF("fonts/DejaVuSans.ttf", 15.0f * 1.50f);
 
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 460");
@@ -203,7 +203,7 @@ void Simulation::keyInput(int key, int scancode, int action, int mods)
 			paused = true;
 			simRate = 0.0;
 		}
-	}	
+	}
 }
 
 void Simulation::scrollInput(double xOffset, double yOffset)

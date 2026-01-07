@@ -36,6 +36,7 @@ void Planet::rotateAboutAxis(float deltaTime, int dayLengthSeconds)
 	float angle = glm::radians(360 * (deltaTime / (float)dayLengthSeconds));
 	glm::quat newRotation = glm::normalize(glm::angleAxis(angle, axis));
 	planetTransform.setRotation(newRotation * glm::normalize(glm::quat_cast(planetTransform.getRotationMatrix())));
+	planetRotation = glm::normalize(glm::quat_cast(planetTransform.getRotationMatrix()));
 }
 
 void Planet::draw

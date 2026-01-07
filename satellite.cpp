@@ -26,7 +26,7 @@ Satellite::Satellite
 	double flightPathAngle,
 	double time
 )
-	: satelliteTransform(parentBody->getPos(), glm::quat(1.0f, 0.0f, 0.0f, 0.0f), glm::vec3(1.0f))
+	: satelliteTransform(parentBody->getPos(), parentBody->getRotation(), glm::vec3(1.0f))
 {
 	satelliteName = name;
 	satelliteDryMass = dryMass;
