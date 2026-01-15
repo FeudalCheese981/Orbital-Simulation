@@ -45,6 +45,12 @@ Satellite::Satellite
 	);
 
 	satelliteIcon = std::make_unique<CircleIcon>(glm::vec3(orbitLineColour), name, glm::vec3(0.0));
+
+	glm::vec3 apoapsisPos = glm::vec3(satelliteTransform.getTranslationMatrix() * satelliteTransform.getRotationMatrix() * satelliteTransform.getScaleMatrix() * glm::vec4(trueAnomalyToCartesian(M_PI), 1.0f));
+	glm::vec3 periapsisPos = glm::vec3(satelliteTransform.getTranslationMatrix() * satelliteTransform.getRotationMatrix() * satelliteTransform.getScaleMatrix() * glm::vec4(trueAnomalyToCartesian(0), 1.0f));
+
+	apoapsisIcon = std::make_unique<TriangleIcon>(glm::vec3(orbitLineColour) - glm::vec3(0.1f), "Apoapsis", apoapsisPos);
+	periapsisIcon = std::make_unique<TriangleIcon>(glm::vec3(orbitLineColour) - glm::vec3(0.1f), "Periapsis", periapsisPos);
 }
 
 void Satellite::draw(Shader& shapeShader, Shader& textShader, Shader& orbitLineShader, Camera& camera, Text& textObj, float uiScale)
@@ -57,6 +63,8 @@ void Satellite::draw(Shader& shapeShader, Shader& textShader, Shader& orbitLineS
 		glLineWidth(3.0f * uiScale);
 
 	satelliteIcon->draw(shapeShader, textShader, camera, textObj, uiScale);
+	apoapsisIcon->draw(shapeShader, textShader, camera, textObj, uiScale);
+	periapsisIcon->draw(shapeShader, textShader, camera, textObj, uiScale);
 
 	orbitLineShader.activate();
 	satelliteTransform.uniform(orbitLineShader);
@@ -85,23 +93,11 @@ void Satellite::updatePosition(double time)
 	satelliteVelocity = calculateVelocity(satelliteTrueAnomaly);
 	satelliteFlightPathAngle = calculateFlightPathAngle(satelliteTrueAnomaly);
 
-	double x = satelliteDistance * cos(satelliteTrueAnomaly);
-	double y = satelliteDistance * sin(satelliteTrueAnomaly);
-	double z = 0.0;
-
-	glm::vec3 pos = glm::vec3(x, y, z);
-
-	glm::mat4 rotation = glm::mat4(1.0f);
-	rotation = glm::rotate(rotation, (float)satelliteLongitudeOfAscendingNode, glm::vec3(0.0f, 0.0f, 1.0f));
-	rotation = glm::rotate(rotation, (float)satelliteInclination, glm::vec3(1.0f, 0.0f, 0.0f));
-	rotation = glm::rotate(rotation, (float)satelliteArgumentOfPeriapsis, glm::vec3(0.0f, 0.0f, 1.0f));
-	pos = glm::vec3(rotation * glm::vec4(pos, 1.0f));
+	glm::vec3 pos = trueAnomalyToCartesian(satelliteTrueAnomaly);
 
 	satellitePos = pos;
 	satelliteIcon->updatePos(glm::vec3(satelliteTransform.getTranslationMatrix() * satelliteTransform.getRotationMatrix() * satelliteTransform.getScaleMatrix() * glm::vec4(pos, 1.0f)));
 }
-
-
 
 void Satellite::calculateOrbitalParameters
 (
@@ -180,7 +176,7 @@ void Satellite::calculateOrbitalParameters
 			satelliteArgumentOfPeriapsis, 
 			satelliteInclination, 
 			satelliteLongitudeOfAscendingNode, 
-			satelliteOrbitLineColour
+			satelliteOrbitLineColour - glm::vec4(0.1f, 0.1f, 0.1f, 0.0f)
 		)
 	);
 }
@@ -214,6 +210,24 @@ double Satellite::calculateAnomaly(double time)
 	double trueAnomaly = 2.0 * atan(sqrt(1 + satelliteEccentricity) / (1 - satelliteEccentricity) * tan(satelliteEccentricAnomaly / 2.0));
 	trueAnomaly = wrapTwoPi(trueAnomaly);
 	return trueAnomaly;
+}
+
+glm::vec3 Satellite::trueAnomalyToCartesian(double trueAnomaly)
+{
+	double distance = calculateDistance(trueAnomaly);
+	double x = distance * cos(trueAnomaly);
+	double y = distance * sin(trueAnomaly);
+	double z = 0.0;
+
+	glm::vec3 pos = glm::vec3(x, y, z);
+
+	glm::mat4 rotation = glm::mat4(1.0f);
+	rotation = glm::rotate(rotation, (float)satelliteLongitudeOfAscendingNode, glm::vec3(0.0f, 0.0f, 1.0f));
+	rotation = glm::rotate(rotation, (float)satelliteInclination, glm::vec3(1.0f, 0.0f, 0.0f));
+	rotation = glm::rotate(rotation, (float)satelliteArgumentOfPeriapsis, glm::vec3(0.0f, 0.0f, 1.0f));
+	pos = glm::vec3(rotation * glm::vec4(pos, 1.0f));
+
+	return pos;
 }
 
 double Satellite::calculateDistance(double trueAnomaly)

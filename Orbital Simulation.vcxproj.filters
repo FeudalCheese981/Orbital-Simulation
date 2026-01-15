@@ -79,6 +79,9 @@
     <Filter Include="Source Files\Object\Satellite">
       <UniqueIdentifier>{0c3e49b5-492c-4c1c-af07-67da41ae4560}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Text\icon\Triangle Icon">
+      <UniqueIdentifier>{f4274819-0215-4276-a99d-b38020ce242b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -161,6 +164,9 @@
     </ClCompile>
     <ClCompile Include="satellite.cpp">
       <Filter>Source Files\Object\Satellite</Filter>
+    </ClCompile>
+    <ClCompile Include="triangleIcon.cpp">
+      <Filter>Source Files\Text\icon\Triangle Icon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -247,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="satellite.hpp">
       <Filter>Source Files\Object\Satellite</Filter>
+    </ClInclude>
+    <ClInclude Include="triangleIcon.hpp">
+      <Filter>Source Files\Text\icon\Triangle Icon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

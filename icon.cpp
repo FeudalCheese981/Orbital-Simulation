@@ -1,8 +1,8 @@
 #include "icon.hpp"
 
-Icon::Icon(glm::vec3 color, std::string text, glm::vec3 pos)
+Icon::Icon(glm::vec3 colour, std::string text, glm::vec3 pos)
 {
-	updateColor(color);
+	updateColor(colour);
 	updateText(text);
 	updatePos(pos);
 
@@ -23,9 +23,9 @@ Icon::~Icon()
 	glDeleteVertexArrays(1, &textVAO);
 }
 
-void Icon::updateColor(glm::vec3 color)
+void Icon::updateColor(glm::vec3 colour)
 {
-	iconColor = color;
+	iconColour = colour;
 }
 
 void Icon::updateText(std::string text)
@@ -40,14 +40,13 @@ void Icon::updatePos(glm::vec3 pos)
 
 void Icon::draw(Shader& shapeShader, Shader& textShader, Camera& camera, Text& textObj, float uiScale)
 {
-	glDisable(GL_DEPTH_TEST);
 	glm::vec4 pos = camera.orthogonalDisplay(iconPos);
 	if (pos.w <= 0.0f)
 	{
 		return;
 	}
 
-	glm::vec4 color = glm::vec4(iconColor, 1.0f);
+	glm::vec4 colour = glm::vec4(iconColour, 1.0f);
 	glm::vec3 camPos = camera.getPos();
 	glm::vec3 distanceScale = camera.getDistanceScale();
 	
@@ -57,8 +56,7 @@ void Icon::draw(Shader& shapeShader, Shader& textShader, Camera& camera, Text& t
 	shapeShader.activate();
 	glUniformMatrix4fv(glGetUniformLocation(shapeShader.getID(), "projection"), 1, GL_FALSE, glm::value_ptr(camera.getOrthogonalProjection()));
 	
-	drawShape(shapeShader, camera, xyPos, color, uiScale);
-	glEnable(GL_DEPTH_TEST);
+	drawShape(shapeShader, camera, xyPos, colour, uiScale);
 
-	textObj.draw(textShader, camera, iconText, xyPos, color, uiScale);
+	textObj.draw(textShader, camera, iconText, xyPos, colour, uiScale);
 }

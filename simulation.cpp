@@ -152,6 +152,13 @@ void Simulation::resizeWindow(int width, int height)
 	{
 		glViewport(0, 0, width, height);
 		camera.windowSizeUpdate(width, height);
+
+		// only update the width and height variables on window resize if windowed
+		if (glfwGetWindowMonitor == nullptr)
+		{
+			windowWidth = width;
+			windowHeight = height;
+		}
 	}
 }
 
@@ -168,6 +175,7 @@ void Simulation::keyInput(int key, int scancode, int action, int mods)
 		{
 			glfwGetWindowPos(window, &windowXPos, &windowYPos);
 			glfwGetWindowSize(window, &windowWidth, &windowHeight);
+			std::cout << windowWidth << " " << windowHeight << "\n";
 			glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
 			fullscreen = true;
 		}
@@ -502,8 +510,8 @@ void Simulation::satelliteUI()
 		{
 			std::string name = satellite.getName();
 
-			ImGui::SetNextWindowPos(ImVec2(600, 100), ImGuiCond_Once);
-			ImGui::SetNextWindowSize(ImVec2(200 * xScale, 300 * yScale), ImGuiCond_Once);
+			ImGui::SetNextWindowPos(ImVec2(windowWidth - 250 * xScale - 50, 50), ImGuiCond_Once);
+			ImGui::SetNextWindowSize(ImVec2(250 * xScale, 280 * yScale), ImGuiCond_Once);
 			if (ImGui::Begin((satellite.getName() + "##").c_str(), &satellite.selected))
 			{
 				ImGui::Text("Altitude: %.2fkm", satellite.getAltitude() / 1000.0);
@@ -537,8 +545,8 @@ void Simulation::satelliteUI()
 					destroyName = satellite.getName();
 				}
 				ImGui::PopStyleColor();
-				ImGui::End();
 			}
+			ImGui::End();
 		}
 	}
 }

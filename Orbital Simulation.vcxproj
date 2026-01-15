@@ -44,6 +44,7 @@
     <ClCompile Include="sun.cpp" />
     <ClCompile Include="text.cpp" />
     <ClCompile Include="texture.cpp" />
+    <ClCompile Include="triangleIcon.cpp" />
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VBO.cpp" />
   </ItemGroup>
@@ -73,6 +74,7 @@
     <ClInclude Include="sun.hpp" />
     <ClInclude Include="text.hpp" />
     <ClInclude Include="texture.hpp" />
+    <ClInclude Include="triangleIcon.hpp" />
     <ClInclude Include="VAO.hpp" />
     <ClInclude Include="VBO.hpp" />
     <ClInclude Include="vertex.hpp" />

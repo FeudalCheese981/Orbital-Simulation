@@ -4,6 +4,7 @@
 #include "shape.hpp"
 #include "mesh.hpp"
 #include "circleIcon.hpp"
+#include "triangleIcon.hpp"
 #include "shader.hpp"
 #include "camera.hpp"
 #include "transform.hpp"
@@ -62,6 +63,8 @@ public:
 	double calculateVelocity(double trueAnomaly);
 	double calculateFlightPathAngle(double trueAnomaly);
 
+	glm::vec3 trueAnomalyToCartesian(double trueAnomaly);
+
 	
 	std::string getName();
 	
@@ -84,6 +87,8 @@ public:
 
 private:
 	std::unique_ptr<CircleIcon> satelliteIcon;
+	std::unique_ptr<TriangleIcon> apoapsisIcon;
+	std::unique_ptr<TriangleIcon> periapsisIcon;
 
 	std::unique_ptr<Mesh> satelliteOrbitMesh;
 	std::unique_ptr<Mesh> satelliteNewOrbitMesh;

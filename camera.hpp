@@ -56,7 +56,7 @@ private:
 	int windowWidth; // store of the window width and height
 	int windowHeight;
 
-	int mode = FREE; // set the initial camera mode to free camera
+	int mode = ORBITAL; // set the initial camera mode to free camera
 
 	float speed = 0.01f; // default speed
 	float sensitivity = 150.0f; // default sensitivity
