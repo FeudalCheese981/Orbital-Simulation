@@ -183,7 +183,7 @@ void Satellite::calculateOrbitalParameters
 
 double Satellite::calculateAnomaly(double time)
 {
-	const int iterations = 50;
+	const int iterations = 64;
 
 	satelliteMeanAnomaly = satelliteMeanMotion * (time - satelliteEpochOfPeriapsis);
 	satelliteMeanAnomaly = wrapTwoPi(satelliteMeanAnomaly);
@@ -197,7 +197,7 @@ double Satellite::calculateAnomaly(double time)
 	for (int i = 0; i < iterations; i++)
 	{
 		// calculate function and first and second derivatives
-		double f_E = E - e * sin(e) - M; // f(E)
+		double f_E = E - e * sin(E) - M; // f(E)
 		double f1_E = 1 - e * cos(E); // f'(E)
 		double f2_E = e * sin(E); // f"(E)
 
@@ -238,7 +238,7 @@ double Satellite::calculateDistance(double trueAnomaly)
 
 double Satellite::calculateVelocity(double trueAnomaly)
 {
-	double velocity = sqrt(gravitationalParameter * ((2.0 / (satelliteSemiMajorAxis * (1 - pow(satelliteEccentricity, 2))) / (1 + satelliteEccentricity * cos(trueAnomaly))) - (1.0 / satelliteSemiMajorAxis)));
+	double velocity = sqrt(gravitationalParameter * ((2.0 / calculateDistance(trueAnomaly)) - (1.0 / satelliteSemiMajorAxis)));
 	return velocity;
 }
 
