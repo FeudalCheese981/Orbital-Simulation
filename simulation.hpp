@@ -7,8 +7,6 @@
 #include "sun.hpp"
 #include "satellite.hpp"
 
-#include "circleIcon.hpp"
-
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -20,7 +18,7 @@ const unsigned int OPENGL_PROFILE = GLFW_OPENGL_CORE_PROFILE;
 struct LaunchUI
 {
 	bool isOpen = false;
-	char name[30];
+	char name[30] = "Unnamed Satellite";
 	double dryMass= 1000.0;
 	double fuelMass = 100.0;
 	double latitudeDegrees = 0.0;
@@ -30,6 +28,7 @@ struct LaunchUI
 	double velocity = 7784.34;
 	double flightPathAngleDegrees = 0.0;
 	float colour[3] = { 1.0f, 1.0f, 1.0f };
+	bool nameTaken = false;
 };
 
 class Simulation
@@ -56,7 +55,9 @@ public:
 	void controlsUI();
 	void simInfoUI();
 	void fpsUI();
-	void displayLaunchUI();
+	void launchUI();
+	void satelliteUI();
+	void destroyPromptUI();
 
 	void physicsUpdate();
 
@@ -99,6 +100,8 @@ private:
 	bool displayControls = true;
 	bool displaySimInfo = true;
 	bool displayFPS = false;
+	bool destroyPrompt = false;
+	std::string destroyName;
 
 	double accumulator = 0.0;
 	double deltaTime = 1.0 / 1000.0;
@@ -134,5 +137,5 @@ private:
 
 	std::vector<Satellite> satellites;
 
-	LaunchUI launchUI;
+	LaunchUI launchUIdata;
 };

@@ -1,16 +1,5 @@
 #include "camera.hpp"
 
-glm::mat4 MakeInfReversedZProjRH(float FOV, float aspectRatio, float nearPlane)
-{
-	float f = 1.0f / tan(FOV / 2.0f);
-	return glm::mat4(
-		f / aspectRatio, 0.0f,  0.0f,  0.0f,
-				  0.0f,    f,  0.0f,  0.0f,
-				  0.0f, 0.0f,  0.0f, -1.0f,
-				  0.0f, 0.0f, nearPlane,  0.0f
-	);
-}
-
 Camera::Camera(int width, int height)
 {
 	windowSizeUpdate(width, height);

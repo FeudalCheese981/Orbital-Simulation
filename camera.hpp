@@ -11,8 +11,6 @@
 
 enum CameraMode { FREE, ORBITAL };
 
-glm::mat4 MakeInfReversedZProjRH(float fovY_radians, float aspecktWbyH, float zNEar);
-
 class Camera
 {
 public:

@@ -103,10 +103,6 @@ Simulation::Simulation(const char* title, int width, int height, int xPos, int y
 	sunShader->activate();
 	glUniformMatrix4fv(glGetUniformLocation(sunShader->getID(), "distanceScale"), 1, GL_FALSE, glm::value_ptr(distanceScale));
 
-	// for Reversed-Z
-	//glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
-	//glDepthFunc(GL_GREATER);
-
 	glEnable(GL_DEPTH_TEST);
 	
 
@@ -118,8 +114,6 @@ Simulation::Simulation(const char* title, int width, int height, int xPos, int y
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	initialised = true;
 }
@@ -306,7 +300,9 @@ void Simulation::displayUI()
 	controlsUI();
 	simInfoUI();
 	fpsUI();
-	displayLaunchUI();
+	launchUI();
+	satelliteUI();
+	destroyPromptUI();
 }
 
 void Simulation::mainMenuUI() 
@@ -329,9 +325,28 @@ void Simulation::mainMenuUI()
 			ImGui::MenuItem("Display FPS", "", &displayFPS);
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Launch"))
+		if (ImGui::BeginMenu("Satellites"))
 		{
-			ImGui::MenuItem("Launch Satellite", "", &launchUI.isOpen);
+			ImGui::MenuItem("Launch Satellite", "", &launchUIdata.isOpen);
+
+			if (satellites.size() != 0)
+			{
+				if (ImGui::BeginMenu("View"))
+				{
+					for (int i = 0; i < satellites.size(); i++)
+					{
+						Satellite& satellite = satellites[i];
+						if (ImGui::MenuItem((satellite.getName() + "##").c_str(), "", satellite.selected))
+						{
+							if (satellite.selected)
+								satellite.selected = false;
+							else
+								satellite.selected = true;
+						}
+					}
+					ImGui::EndMenu();
+				}
+			}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
@@ -395,64 +410,163 @@ void Simulation::fpsUI()
 	}
 }
 
-void Simulation::displayLaunchUI()
+void Simulation::launchUI()
 {
-	if (launchUI.isOpen)
+	if (launchUIdata.isOpen)
 	{
-		if (ImGui::Begin("Launch##", &launchUI.isOpen))
+		if (ImGui::Begin("Launch##", &launchUIdata.isOpen))
 		{
 			ImGui::SeparatorText("Satellite Info");
 			ImGui::Text("Name");
-			ImGui::InputTextWithHint("##Name", "Name", launchUI.name, 30);
+			ImGui::InputTextWithHint("##Name", "Name", launchUIdata.name, 30);
 			ImGui::Text("Dry Mass");
-			ImGui::InputDouble("kg##DryMass", &launchUI.dryMass);
+			ImGui::InputDouble("kg##DryMass", &launchUIdata.dryMass);
 			ImGui::Text("Fuel Mass");
-			ImGui::InputDouble("kg##FuelMas", &launchUI.fuelMass);
+			ImGui::InputDouble("kg##FuelMas", &launchUIdata.fuelMass);
 
 			ImGui::SeparatorText("Launch Info");
 			ImGui::Text("Planet");
 			
 			ImGui::Text("Longitude");
-			ImGui::InputDouble("°##Longitude", &launchUI.longitudeDegrees);
+			ImGui::InputDouble("°##Longitude", &launchUIdata.longitudeDegrees);
 			ImGui::Text("Latitude");
-			ImGui::InputDouble("°##Latitude", &launchUI.latitudeDegrees);
+			ImGui::InputDouble("°##Latitude", &launchUIdata.latitudeDegrees);
 			ImGui::Text("Azimuth");
-			ImGui::InputDouble("°##Azimuth", &launchUI.azimuthDegrees);
+			ImGui::InputDouble("°##Azimuth", &launchUIdata.azimuthDegrees);
 
 			ImGui::SeparatorText("Engine Cutoff");
 			ImGui::Text("Altitude");
-			ImGui::InputDouble("km##Altiude", &launchUI.altitude_km);
+			ImGui::InputDouble("km##Altiude", &launchUIdata.altitude_km);
 			ImGui::Text("Velocity");
-			ImGui::InputDouble("m/s##Velocity", &launchUI.velocity);
+			ImGui::InputDouble("m/s##Velocity", &launchUIdata.velocity);
 			ImGui::Text("Flight Path Angle");
-			ImGui::InputDouble("°##FlightPathAngle", &launchUI.flightPathAngleDegrees);
+			ImGui::InputDouble("°##FlightPathAngle", &launchUIdata.flightPathAngleDegrees);
 			
 			ImGui::Separator();
-			ImGui::ColorEdit3("##Colour", launchUI.colour);
+			ImGui::ColorEdit3("##Colour", launchUIdata.colour);
 			if (ImGui::Button("Launch!"))
 			{
-				launchUI.isOpen = false;
-				addSatellite
-				(
-					launchUI.name,
-					launchUI.dryMass,
-					launchUI.fuelMass,
-					launchUI.colour,
-					"Earth",
-					glm::radians(launchUI.longitudeDegrees),
-					glm::radians(launchUI.latitudeDegrees),
-					glm::radians(launchUI.azimuthDegrees),
-					launchUI.altitude_km * 1000,
-					launchUI.velocity,
-					glm::radians(launchUI.flightPathAngleDegrees)
-				);
+				// error checking so that user cant enter a satellite that has the same name
+				// as another
+				launchUIdata.nameTaken = false;
+				for (int i = 0; i < satellites.size(); i++)
+				{
+					Satellite& satellite = satellites[i];
+					if (satellite.getName() == launchUIdata.name)
+						launchUIdata.nameTaken = true;
+				}
+
+				if (!launchUIdata.nameTaken)
+				{
+					launchUIdata.isOpen = false;
+					addSatellite
+					(
+						launchUIdata.name,
+						launchUIdata.dryMass,
+						launchUIdata.fuelMass,
+						launchUIdata.colour,
+						"Earth",
+						glm::radians(launchUIdata.longitudeDegrees),
+						glm::radians(launchUIdata.latitudeDegrees),
+						glm::radians(launchUIdata.azimuthDegrees),
+						launchUIdata.altitude_km * 1000,
+						launchUIdata.velocity,
+						glm::radians(launchUIdata.flightPathAngleDegrees)
+					);
+				}
+			}
+
+			// outputs an error message if the user does enter a name for their satellite
+			// that aanother satellite has
+			if (launchUIdata.nameTaken)
+			{
+				ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
+				ImGui::Text("Cant Have two Satellites of the same name");
+				ImGui::PopStyleColor();
 			}
 		}
 		ImGui::End();
 	}
 	else
 	{
-		launchUI = LaunchUI{};
+		launchUIdata = LaunchUI{};
+	}
+}
+
+void Simulation::satelliteUI()
+{
+	for (int i = 0; i < satellites.size(); i++)
+	{
+		Satellite& satellite = satellites[i];
+		if (satellite.selected)
+		{
+			std::string name = satellite.getName();
+
+			ImGui::SetNextWindowPos(ImVec2(600, 100), ImGuiCond_Once);
+			ImGui::SetNextWindowSize(ImVec2(200 * xScale, 300 * yScale), ImGuiCond_Once);
+			if (ImGui::Begin((satellite.getName() + "##").c_str(), &satellite.selected))
+			{
+				ImGui::Text("Altitude: %.2fkm", satellite.getAltitude() / 1000.0);
+				ImGui::Text("Velocity: %.2fm/s", satellite.getVelocity());
+				ImGui::Text("FPA: %.2f°", glm::degrees(satellite.getFlightPathAngle()));
+				ImGui::Separator();
+				ImGui::Text("Apoapsis: %.2fkm", satellite.getApoapsis() / 1000.0);
+				ImGui::Text("Periapsis: %.2fkm", satellite.getPeriapsis() / 1000.0);
+				ImGui::Text("Eccentricity: %.4f", satellite.getEccentricity());
+				ImGui::Text("Semi-major Axis: %.2fkm", satellite.getSemiMajorAxis() / 1000.0);
+				ImGui::Text("Argument of Periapsis: %.2f°", glm::degrees(satellite.getArgumentOfPeriapsis()));
+				ImGui::Text("Inclination: %.2f°", glm::degrees(satellite.getInclination()));
+				ImGui::Text("Longitude of Ascending Node: %.2f°", glm::degrees(satellite.getInclination()));
+				ImGui::Text("Orbital Period: %.2fs", satellite.getOrbitalPeriod());
+				ImGui::Separator();
+				if (satellite.hidden)
+				{
+					if (ImGui::Button("Show"))
+						satellite.hidden = false;
+				}
+				else
+				{
+					if (ImGui::Button("Hide"))
+						satellite.hidden = true;
+				}
+				ImGui::SameLine();
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(255, 0, 0, 255));
+				if (ImGui::Button("Destroy"))
+				{
+					destroyPrompt = true;
+					destroyName = satellite.getName();
+				}
+				ImGui::PopStyleColor();
+				ImGui::End();
+			}
+		}
+	}
+}
+
+void Simulation::destroyPromptUI()
+{
+	if (destroyPrompt)
+	{
+		ImGui::OpenPopup("Confirm Destroy");
+	}
+	if (ImGui::BeginPopup("Confirm Destroy"))
+	{
+		ImGui::Text("Warning this action is irreversable!");
+		if (ImGui::Button("Cancel"))
+		{
+			destroyPrompt = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(255, 0, 0, 255));
+		if (ImGui::Button("Destroy"))
+		{
+			deleteSatellite(destroyName);
+			destroyPrompt = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::PopStyleColor();
+		ImGui::EndPopup();
 	}
 }
 

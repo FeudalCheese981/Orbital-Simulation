@@ -39,7 +39,6 @@ public:
 	Satellite(Satellite&&) noexcept = default; // garuntee exception safety
 	Satellite& operator=(Satellite&&) noexcept = default;
 
-
 	void draw(Shader& shapeShader, Shader& textShader, Shader& lineShader, Camera& camera, Text& textObj, float uiScale);
 
 	// TODO: void manoeuvrePlan(double burnStartTime);
@@ -63,7 +62,25 @@ public:
 	double calculateVelocity(double trueAnomaly);
 	double calculateFlightPathAngle(double trueAnomaly);
 
+	
 	std::string getName();
+	
+	double getAltitude();
+	double getVelocity();
+	double getFlightPathAngle();
+	double getApoapsis();
+	double getPeriapsis();
+	double getEccentricity();
+	double getSemiMajorAxis();
+	double getArgumentOfPeriapsis();
+	double getInclination();
+	double getLongitudeOfAscendingNode();
+	double getOrbitalPeriod();
+
+
+
+	bool selected = true;
+	bool hidden = false;
 
 private:
 	std::unique_ptr<CircleIcon> satelliteIcon;
@@ -103,7 +120,6 @@ private:
 	glm::vec4 satelliteOrbitLineColour;
 
 	bool burnPlanned = false;
-	bool selected = false;
 
 	Planet* satelliteParentBody;
 	double gravitationalParameter;

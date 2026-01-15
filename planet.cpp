@@ -89,3 +89,9 @@ double Planet::getRadius()
 {
 	return planetRadius;
 }
+
+void Planet::updatePos(glm::vec3 pos)
+{
+	planetPosition = pos;
+	planetTransform.setPosition(pos);
+}

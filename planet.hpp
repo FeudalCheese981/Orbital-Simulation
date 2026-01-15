@@ -41,6 +41,8 @@ public:
 	double getMass();
 	double getRadius();
 
+	void updatePos(glm::vec3 pos);
+
 
 private:
 	Texture diffuseTexture;

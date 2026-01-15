@@ -49,6 +49,8 @@ Satellite::Satellite
 
 void Satellite::draw(Shader& shapeShader, Shader& textShader, Shader& orbitLineShader, Camera& camera, Text& textObj, float uiScale)
 {
+	if (hidden)
+		return;
 	if (satelliteOrbitMesh == nullptr)
 		return;
 	if (selected)
@@ -72,6 +74,34 @@ void Satellite::changeParentBody(Planet* parentBody)
 	satelliteParentBody = parentBody;
 	gravitationalParameter = G * parentBody->getMass();
 }
+
+void Satellite::updatePosition(double time)
+{
+	satelliteTransform.setPosition(satelliteParentBody->getPos());
+
+	satelliteTrueAnomaly = calculateAnomaly(time);
+
+	satelliteDistance = calculateDistance(satelliteTrueAnomaly);
+	satelliteVelocity = calculateVelocity(satelliteTrueAnomaly);
+	satelliteFlightPathAngle = calculateFlightPathAngle(satelliteTrueAnomaly);
+
+	double x = satelliteDistance * cos(satelliteTrueAnomaly);
+	double y = satelliteDistance * sin(satelliteTrueAnomaly);
+	double z = 0.0;
+
+	glm::vec3 pos = glm::vec3(x, y, z);
+
+	glm::mat4 rotation = glm::mat4(1.0f);
+	rotation = glm::rotate(rotation, (float)satelliteLongitudeOfAscendingNode, glm::vec3(0.0f, 0.0f, 1.0f));
+	rotation = glm::rotate(rotation, (float)satelliteInclination, glm::vec3(1.0f, 0.0f, 0.0f));
+	rotation = glm::rotate(rotation, (float)satelliteArgumentOfPeriapsis, glm::vec3(0.0f, 0.0f, 1.0f));
+	pos = glm::vec3(rotation * glm::vec4(pos, 1.0f));
+
+	satellitePos = pos;
+	satelliteIcon->updatePos(glm::vec3(satelliteTransform.getTranslationMatrix() * satelliteTransform.getRotationMatrix() * satelliteTransform.getScaleMatrix() * glm::vec4(pos, 1.0f)));
+}
+
+
 
 void Satellite::calculateOrbitalParameters
 (
@@ -128,15 +158,18 @@ void Satellite::calculateOrbitalParameters
 		cos(azimuth)
 	);
 	satelliteLongitudeOfAscendingNode = longitude - deltaLongitude;
+	satelliteLongitudeOfAscendingNode = wrapTwoPi(satelliteLongitudeOfAscendingNode);
 
 	satelliteInclination = acos(cos(latitude) * sin(azimuth));
-	
+	satelliteInclination = wrapTwoPi(satelliteInclination);
+
 	double l = atan2
 	(
 		tan(latitude),
 		cos(azimuth)
 	);
 	satelliteArgumentOfPeriapsis = l - satelliteTrueAnomaly;
+	satelliteArgumentOfPeriapsis = wrapTwoPi(satelliteArgumentOfPeriapsis);
 
 	satelliteOrbitMesh = std::make_unique<Mesh>
 	(
@@ -150,30 +183,6 @@ void Satellite::calculateOrbitalParameters
 			satelliteOrbitLineColour
 		)
 	);
-}
-
-void Satellite::updatePosition(double time)
-{
-	satelliteTrueAnomaly = calculateAnomaly(time);
-
-	satelliteDistance = calculateDistance(satelliteTrueAnomaly);
-	satelliteVelocity = calculateVelocity(satelliteTrueAnomaly);
-	satelliteFlightPathAngle = calculateFlightPathAngle(satelliteTrueAnomaly);
-	
-	double x = satelliteDistance * cos(satelliteTrueAnomaly);
-	double y = satelliteDistance * sin(satelliteTrueAnomaly);
-	double z = 0.0;
-
-	glm::vec3 pos = glm::vec3(x, y, z);
-
-	glm::mat4 rotation = glm::mat4(1.0f);
-	rotation = glm::rotate(rotation, (float)satelliteLongitudeOfAscendingNode, glm::vec3(0.0f, 0.0f, 1.0f));
-	rotation = glm::rotate(rotation, (float)satelliteInclination, glm::vec3(1.0f, 0.0f, 0.0f));
-	rotation = glm::rotate(rotation, (float)satelliteArgumentOfPeriapsis, glm::vec3(0.0f, 0.0f, 1.0f));
-	pos = glm::vec3(rotation * glm::vec4(pos, 1.0f));
-
-	satellitePos = pos;
-	satelliteIcon->updatePos(glm::vec3(satelliteTransform.getTranslationMatrix() * satelliteTransform.getRotationMatrix() * satelliteTransform.getScaleMatrix() * glm::vec4(pos, 1.0f)));
 }
 
 double Satellite::calculateAnomaly(double time)
@@ -228,4 +237,59 @@ double Satellite::calculateFlightPathAngle(double trueAnomaly)
 std::string Satellite::getName()
 {
 	return satelliteName;
+}
+
+double Satellite::getAltitude()
+{
+	return satelliteDistance - satelliteParentBody->getRadius();
+}
+
+double Satellite::getVelocity()
+{
+	return satelliteVelocity;
+}
+
+double Satellite::getFlightPathAngle()
+{
+	return satelliteFlightPathAngle;
+}
+
+double Satellite::getApoapsis()
+{
+	return satelliteApoapsis - satelliteParentBody->getRadius();
+}
+
+double Satellite::getPeriapsis()
+{
+	return satellitePeriapsis - satelliteParentBody->getRadius();
+}
+
+double Satellite::getEccentricity()
+{
+	return satelliteEccentricity;
+}
+
+double Satellite::getSemiMajorAxis()
+{
+	return satelliteSemiMajorAxis;
+}
+
+double Satellite::getArgumentOfPeriapsis()
+{
+	return satelliteArgumentOfPeriapsis;
+}
+
+double Satellite::getInclination()
+{
+	return satelliteInclination;
+}
+
+double Satellite::getLongitudeOfAscendingNode()
+{
+	return satelliteLongitudeOfAscendingNode;
+}
+
+double Satellite::getOrbitalPeriod()
+{
+	return satelliteOrbitalPeriod;
 }
