@@ -1,17 +1,18 @@
-#define _USE_MATH_DEFINES
+#define _USE_MATH_DEFINES // gets pi as M_PI
 #include <cmath>
 
 #include "circleIcon.hpp"
 
 CircleIcon::CircleIcon(glm::vec3 colour, std::string text, glm::vec3 pos)
-	: Icon(colour, text, pos)
+	: Icon(colour, text, pos) // call the base class constructor
 {
-	glGenVertexArrays(1, &circleVAO);
+	// create VAO and VBO for the circle
+	glGenVertexArrays(1, &circleVAO); 
 	glBindVertexArray(circleVAO);
 	glGenBuffers(1, &circleVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, circleVBO);
-	glBufferData(GL_ARRAY_BUFFER, 48 * 2 * sizeof(float), NULL, GL_DYNAMIC_DRAW);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+	glBufferData(GL_ARRAY_BUFFER, 48 * 2 * sizeof(float), NULL, GL_DYNAMIC_DRAW); // circle with 16 segments (48 vertices in total)
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0); // each vertex has x, y position
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -19,26 +20,26 @@ CircleIcon::CircleIcon(glm::vec3 colour, std::string text, glm::vec3 pos)
 
 CircleIcon::~CircleIcon()
 {
-	glDeleteBuffers(1, &circleVBO);
+	glDeleteBuffers(1, &circleVBO); // deletes the VAO and VBO
 	glDeleteVertexArrays(1, &circleVAO);
 }
 
 void CircleIcon::drawShape(Shader& shader, Camera& camera, glm::vec2 xyPos, glm::vec4 colour, float uiScale)
 {
 	float vertices[48][2];
-	float r = 6 * uiScale;
+	float r = 6 * uiScale; // initialise circle size, factoring in the UI scale
 
-	int v = 0;
-	for (int i = 0; i < 16; i++)
+	int v = 0; 
+	for (int i = 0; i < 16; i++) // iterate and generate vertices
 	{
 		float theta1 = 2.0f * M_PI * (float)i / 16.0f;
 		float theta2 = 2.0f * M_PI * (float)(i + 1) / 16.0f;
+		
 		float x1 = r * cos(theta1) + xyPos.x;
 		float y1 = r * sin(theta1) + xyPos.y;
 
 		float x2 = r * cos(theta2) + xyPos.x;
 		float y2 = r * sin(theta2) + xyPos.y;
-
 
 		vertices[v][0] = xyPos.x;
 		vertices[v][1] = xyPos.y;
@@ -51,16 +52,17 @@ void CircleIcon::drawShape(Shader& shader, Camera& camera, glm::vec2 xyPos, glm:
 		v++;
 	}
 
-	shader.activate();
+	// pass colour information to shader
+	shader.activate(); 
 	glUniform4f(glGetUniformLocation(shader.getID(), "colour"), colour.x, colour.y, colour.z, colour.w);
-
+	// bind buffer and vertex array and pass in vertex data
 	glBindVertexArray(circleVAO);
-
 	glBindBuffer(GL_ARRAY_BUFFER, circleVBO);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+	// unbind the buffer
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glDrawArrays(GL_TRIANGLES, 0, 48);
-
-	glBindVertexArray(0);
+	// draw the circle
+	glDrawArrays(GL_TRIANGLES, 0, 48); 
+	// unbind vertex array
+	glBindVertexArray(0); 
 }

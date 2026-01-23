@@ -4,6 +4,7 @@
 #include "shader.hpp"
 #include <stb/stb_image.h>
 
+// Texture class - dedicated reusable class that stores a texture
 class Texture
 {
 public:
@@ -11,9 +12,9 @@ public:
 	~Texture(); // Deletes the Texture
 
 	void textureUniform(Shader& shader, const char* uniform); // passes the texture to shader uniform
-	const char* getTexType();
-	void bind(); // Binds texture
-	void unbind(); // Unbinds texture
+	const char* getTexType(); // getter for the 
+	void bind(); // Binds texture to OpenGL context
+	void unbind(); // Unbinds texture form OpenGL context
 
 private:
 	GLuint ID; // Texture ID

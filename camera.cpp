@@ -2,15 +2,18 @@
 
 Camera::Camera(int width, int height)
 {
+	// set the Window size and the position
 	windowSizeUpdate(width, height);
 	resetView();
 }
 
 void Camera::windowSizeUpdate(int width, int height)
 {
+	// Set the new Height And Width
 	windowWidth = width;
 	windowHeight = height;
 	
+	// Update the Orthogonal Projection Matrix
 	orthogonalProjection = glm::ortho(0.0f, (float)(width), 0.0f, (float)(height));
 }
 
@@ -19,15 +22,17 @@ void Camera::updateMatrix()
 	glm::mat4 view = glm::mat4(1.0f);
 	glm::mat4 projection = glm::mat4(1.0f);
 
+	// Set view and projection matrix
 	view = glm::lookAt(position, position + orientation, up);
 	projection = glm::perspective(FOV, (float)(windowWidth) / (float)(windowHeight), nearPlane, farPlane);
-	//projection = MakeInfReversedZProjRH(FOV, (float)(windowWidth) / (float)(windowHeight), nearPlane);
 
-	cameraMatrix = projection * view;
+	// Set the camera Matrix
+	cameraMatrix = projection * view; 
 }
 
 void Camera::cameraUniform(Shader& shader)
 {
+	// Send Camera Matrix and Position to the Shader
 	glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "cameraMatrix"), 1, GL_FALSE, glm::value_ptr(cameraMatrix));
 	glUniform3f(glGetUniformLocation(shader.getID(), "cameraPosition"), position.x, position.y, position.z);
 }
@@ -44,10 +49,11 @@ void Camera::changeSensitivity(float newSensitivity)
 
 void Camera::changeMode()
 {
+	// Temporarily store the position and Orientation
 	glm::vec3 tempPositon = position;
 	glm::vec3 tempOrientation = orientation;
 	
-
+	// Set the new Camera Mode
 	if (mode == ORBITAL)
 	{
 		mode = FREE;
@@ -57,16 +63,20 @@ void Camera::changeMode()
 		mode = ORBITAL;
 	}
 
+	// Update the position and orientation
 	position = positionStore;
 	orientation = orientationStore;
+	// Set the storage variables
 	positionStore = tempPositon;
 	orientationStore = tempOrientation;
 }
 
 void Camera::resetView()
 {
+	// Set default camera position and orientation
 	position = glm::vec3(1.0f, 1.0f, 1.0f);
 	orientation = glm::normalize(-position);
+	// Set the storage attributes to these initial values
 	positionStore = position;
 	orientationStore = orientation;
 }
@@ -93,9 +103,11 @@ glm::mat4 Camera::getOrthogonalProjection()
 
 glm::vec4 Camera::orthogonalDisplay(glm::vec3 pos)
 {
+	// Convert 3D Coordinates into relative screen coordinates (-1 to 1)
 	glm::vec4 screenPos = cameraMatrix * glm::vec4(pos * distanceScale, 1.0f);
+	// normalise coordinates with distance
 	glm::vec2 normalisedCoords = glm::vec2(screenPos) / screenPos.w;
-	
+	// compute x and y window coordinates
 	float x = (normalisedCoords.x * 0.5f + 0.5f) * windowWidth;
 	float y = (normalisedCoords.y * 0.5f + 0.5f) * windowHeight;
 
@@ -152,39 +164,47 @@ void Camera::mouseInput(GLFWwindow* window)
 	{
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 		{
+			// Hide the mouse cursor
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		
+			
+			// If the click is the first click in the data stream set the mouse to the coordinates of the click location
 			if (firstClick)
 			{
 				glfwSetCursorPos(window, mouseClickX, mouseClickY);
 				firstClick = false;
 			}
 
+			// Get new cursor position
 			double mouseX, mouseY;
 			glfwGetCursorPos(window, &mouseX, &mouseY);
 
+			// Calculate rotation in x and y
 			float rotX = - sensitivity * (float)(mouseX - mouseClickX) / (float)(windowWidth);
 			float rotY = - sensitivity * (float)(mouseY - mouseClickY) / (float)(windowHeight);
 
+			// Rotate orientation in y with max angle 85 degrees
 			glm::vec3 newOrientation = glm::rotate(orientation, glm::radians(rotY), glm::normalize(glm::cross(orientation, up)));
-
 			if (abs(glm::angle(glm::normalize(newOrientation), up) - glm::radians(90.0f)) <= glm::radians(85.0f))
 			{
 				orientation = newOrientation;
 			}
-
+			// Rotate orientation in x
 			orientation = glm::rotate(orientation, glm::radians(rotX), up);
 
+			// Reset cursor position to click spot
 			glfwSetCursorPos(window, mouseClickX, mouseClickY);
 		}
 		else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
 		{
+			// Show mouse cursor
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 			firstClick = true;
+			// Get the mouse position for next click
 			glfwGetCursorPos(window, &mouseClickX, &mouseClickY);
 		}
 	}
 
+	// Same process for FREE camera, except for poition also moves with orientation
 	else if (mode == ORBITAL)
 	{
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)

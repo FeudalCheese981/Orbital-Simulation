@@ -39,7 +39,8 @@ Texture::Texture(const char* image, const char* texType, GLuint slot)
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	stbi_image_free(imgData); // free image data
+	// free image data
+	stbi_image_free(imgData); 
 	unbind();
 }
 
@@ -50,7 +51,8 @@ Texture::~Texture()
 
 void Texture::textureUniform(Shader& shader, const char* uniform)
 {
-	glUniform1i(glGetUniformLocation(shader.getID(), uniform), unit); // send uniform
+	// sends texture to shader
+	glUniform1i(glGetUniformLocation(shader.getID(), uniform), unit); 
 }
 
 const char* Texture::getTexType()
@@ -60,6 +62,7 @@ const char* Texture::getTexType()
 
 void Texture::bind()
 {
+	// set texture as active texture and bind
 	glActiveTexture(GL_TEXTURE0 + unit);
 	glBindTexture(GL_TEXTURE_2D, ID);
 }

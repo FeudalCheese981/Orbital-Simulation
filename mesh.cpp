@@ -25,6 +25,8 @@ Mesh::Mesh(const MeshData& data)
 
 void Mesh::draw(GLenum type)
 {
+	// Bind vertex array
 	VAO.bind();
+	// Draw mesh based on the input draw type
 	glDrawElements(type, indices.size(), GL_UNSIGNED_INT, 0);
 }

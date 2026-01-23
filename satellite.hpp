@@ -10,10 +10,11 @@
 #include "transform.hpp"
 #include "planet.hpp"
 
-const double G = 6.673e-11;
+const double G = 6.673e-11; // Gravitational Constant
 
-double wrapTwoPi(double angleRadians);
+double wrapTwoPi(double angleRadians); // Function to wrap an angle to 0 to 2 Pi
 
+// Satellite Class - stores information about a satellite in orbit and its trajectory
 class Satellite
 {
 public:
@@ -31,21 +32,20 @@ public:
 		double velocity,
 		double flightPathAngle,
 		double time
-	);
+	); // Initialise the Satellite from Launch Parameters
 	~Satellite() = default;
 
-	// making class move-only for memory safety
+	// Making class move-only for memory safety
 	Satellite(const Satellite&) = delete;
 	Satellite& operator=(const Satellite&) = delete;
-	Satellite(Satellite&&) noexcept = default; // garuntee exception safety
+	Satellite(Satellite&&) noexcept = default; // Guarantee exception safety
 	Satellite& operator=(Satellite&&) noexcept = default;
 
-	void draw(Shader& shapeShader, Shader& textShader, Shader& lineShader, Camera& camera, Text& textObj, float uiScale);
+	void draw(Shader& shapeShader, Shader& textShader, Shader& lineShader, Camera& camera, Text& textObj, float uiScale); // Draws satellite Icon and Trajectory
 
-	// TODO: void manoeuvrePlan(double burnStartTime);
-	void changeParentBody(Planet* parentBody);
+	void changeParentBody(Planet* parentBody); // Set The parent body to given Planet
 
-	void updatePosition(double time);
+	void updatePosition(double time); // Set new satellite position at new simulation time
 
 	void calculateOrbitalParameters
 	(
@@ -56,18 +56,17 @@ public:
 		double velocity,
 		double flightPathAngle,
 		double time
-	);
+	); // Calculates orbital elements from launch parameters
 
+	// Helper Functions to compute respective attributes
 	double calculateAnomaly(double time);
 	double calculateDistance(double trueAnomaly);
 	double calculateVelocity(double trueAnomaly);
 	double calculateFlightPathAngle(double trueAnomaly);
-
 	glm::vec3 trueAnomalyToCartesian(double trueAnomaly);
 
-	
-	std::string getName();
-	
+	// Getters for attributes
+	std::string getName();	
 	double getAltitude();
 	double getVelocity();
 	double getFlightPathAngle();
@@ -80,26 +79,27 @@ public:
 	double getLongitudeOfAscendingNode();
 	double getOrbitalPeriod();
 
-
-
 	bool selected = true;
 	bool hidden = false;
 
 private:
+	// Icons
 	std::unique_ptr<CircleIcon> satelliteIcon;
 	std::unique_ptr<TriangleIcon> apoapsisIcon;
 	std::unique_ptr<TriangleIcon> periapsisIcon;
 
+	// Trajectory Mesh
 	std::unique_ptr<Mesh> satelliteOrbitMesh;
-	std::unique_ptr<Mesh> satelliteNewOrbitMesh;
 
+	// Transform
 	Transform satelliteTransform;
 
+	// Satellite basic attributes
 	std::string satelliteName;
 	double satelliteDryMass;
 	double satelliteFuelMass;
-	double satelliteSpecificImpulse;
 
+	// Orbital elements
 	double satelliteEccentricity;
 	double satelliteSemiMajorAxis;
 	double satelliteArgumentOfPeriapsis;
@@ -107,6 +107,7 @@ private:
 	double satelliteLongitudeOfAscendingNode;
 	double satelliteEpochOfPeriapsis;
 
+	// Other Orbital Information
 	double satelliteApoapsis;
 	double satellitePeriapsis;
 
@@ -121,11 +122,12 @@ private:
 	double satelliteVelocity;
 	double satelliteFlightPathAngle;
 
+	// 3D space position and colour
 	glm::vec3 satellitePos;
 	glm::vec4 satelliteOrbitLineColour;
 
-	bool burnPlanned = false;
-
+	// Pointer to the satellites parent body
 	Planet* satelliteParentBody;
+
 	double gravitationalParameter;
 };

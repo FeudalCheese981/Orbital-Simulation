@@ -11,28 +11,31 @@
 
 enum CameraMode { FREE, ORBITAL };
 
+// Camera Class - stores information about the camera looking at the scene
 class Camera
 {
 public:
-	Camera(int width, int height);
+	Camera(int width, int height); // Initialises the Camera with the inital screen ratio
 	~Camera() = default;
 	
-	void windowSizeUpdate(int width, int height);
-	void updateMatrix();
-	void cameraUniform(Shader& shader);
+	void windowSizeUpdate(int width, int height); // Sets a new screen ratio
+	void updateMatrix(); // Updates the perspective matrix
+	void cameraUniform(Shader& shader); // Sends the camera perspective matrix to the shader
 
-	void changeFOV(float newFOVdeg);
-	void changeSensitivity(float newSensitivity);
-	void changeMode();
-	void resetView();
-	void setDistanceScale(glm::vec3 scale);
+	void changeFOV(float newFOVdeg); // Sets a new Field Of View
+	void changeSensitivity(float newSensitivity); // Sets a new sensitivity
+	void changeMode(); // Changes the camera mode
+	void resetView(); // Resets the Camera's view to the original position and orientation
+	void setDistanceScale(glm::vec3 scale); // Sets distance scale for objects in scene
 
+	// Getters for Camera Information
 	glm::vec3 getPos();
 	glm::mat4 getMatrix();
 	glm::mat4 getOrthogonalProjection();
 	glm::vec4 orthogonalDisplay(glm::vec3 pos);
 	glm::vec3 getDistanceScale();
 
+	// Processes Inputs for the Camera
 	void keyInput(GLFWwindow* window);
 	void mouseInput(GLFWwindow* window);
 	void scrollInput(double yOffset);

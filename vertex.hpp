@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 
+// Stores information about a vertex
 struct Vertex
 {
 	glm::vec3 position;

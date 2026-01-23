@@ -7,6 +7,7 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/vector_angle.hpp>
 
+// Generates vertices and indices for a sphere
 MeshData generateSphere(double radius, int segments, glm::vec4 colour);
-
+// Generates vertices and indices for an orbital trajectory
 MeshData generateOrbitLine(int segments, double eccentricity, double semiMajorAxis, double argumentOfPeriapsis, double inclination, double longitudeOfAscendingNode, glm::vec4 colour);

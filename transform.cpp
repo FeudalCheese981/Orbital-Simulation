@@ -2,6 +2,7 @@
 
 Transform::Transform(glm::vec3 position, glm::quat rotation, glm::vec3 scale)
 {
+	// set transform
 	setPosition(position);
 	setRotation(rotation);
 	setScale(scale);
@@ -14,7 +15,7 @@ void Transform::setPosition(glm::vec3 position)
 
 void Transform::setRotation(glm::quat rotation)
 {
-	rotationMatrix = glm::mat4_cast(glm::normalize(rotation));
+	rotationMatrix = glm::mat4_cast(glm::normalize(rotation)); // normalised to avoid errors
 }
 
 void Transform::setScale(glm::vec3 scale)
@@ -24,6 +25,7 @@ void Transform::setScale(glm::vec3 scale)
 
 void Transform::uniform(Shader& shader)
 {
+	// send matricies to given shader
 	glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "translation"), 1, GL_FALSE, glm::value_ptr(translationMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "rotation"), 1, GL_FALSE, glm::value_ptr(rotationMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(shader.getID(), "scale"), 1, GL_FALSE, glm::value_ptr(scaleMatrix));
