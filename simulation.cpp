@@ -450,7 +450,7 @@ void Simulation::launchUI()
 			ImGui::InputDouble("kg##FuelMas", &launchUIdata.fuelMass);
 
 			ImGui::SeparatorText("Launch Info");
-			ImGui::Text("Planet");
+			ImGui::Text("Planet: Earth");
 			
 			ImGui::Text("Longitude");
 			ImGui::InputDouble("°##Longitude", &launchUIdata.longitudeDegrees);
